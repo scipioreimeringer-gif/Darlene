@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darlene oefent Nederlands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#1F4E5F;--teal2:#2E6E82;--coral:#E07A5F;--green:#3D9970;--red:#C0392B;--bg:#F6F8F9;--card:#fff;--tint:#EEF4F5;--peach:#FDF1EC;--ink:#1E2A32;--muted:#5E6E76;--line:#DCE4E7}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.45}
+header{background:var(--teal);color:#fff;padding:28px 20px 20px}
+header h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:30px;margin:0 0 4px}
+header p{margin:0;opacity:.85;font-size:14px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;font-size:14px;font-weight:500;cursor:pointer}
+nav button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+section{display:none}section.on{display:block}
+h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:26px;color:var(--teal);margin:4px 0 6px}
+.intro{color:var(--muted);margin:0 0 16px;font-size:15px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+.rule{background:var(--tint);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:15px}
+.rule b{color:var(--teal)}
+.score{display:inline-block;background:var(--peach);color:var(--coral);font-weight:700;border-radius:999px;padding:4px 12px;font-size:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:0;background:var(--teal);color:#fff;padding:10px 16px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.btn.alt{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+.btn.coral{background:var(--coral)}
+.btn:disabled{opacity:.45;cursor:default}
+/* flashcards */
+.flash{perspective:900px;height:220px;margin:6px 0 14px;cursor:pointer}
+.flash .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.flash.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.front{background:var(--teal);color:#fff}
+.back{background:var(--peach);color:var(--ink);transform:rotateY(180deg)}
+.face .w{font-family:"DM Serif Display",serif;font-size:34px}
+.face .s{font-size:14px;opacity:.8;margin-top:6px}
+.meta{color:var(--muted);font-size:14px}
+/* quiz items */
+.q{padding:12px 0;border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:0}
+.q .p{margin-bottom:8px}
+.q input[type=text]{font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;width:100%;max-width:260px;background:#fff}
+.q input.ok{border-color:var(--green);background:#EAF6F0}
+.q input.bad{border-color:var(--red);background:#FBECEA}
+.fb{font-size:14px;margin-top:6px;min-height:1em}
+.fb.ok{color:var(--green)}.fb.bad{color:var(--red)}
+.choice{border:1.5px solid var(--line);background:#fff;padding:8px 14px;border-radius:10px;font:inherit;cursor:pointer;margin:0 6px 6px 0}
+.choice.ok{border-color:var(--green);background:#EAF6F0;color:var(--green);font-weight:600}
+.choice.bad{border-color:var(--red);background:#FBECEA;color:var(--red)}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.vgrid label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
+.vgrid input,.vgrid select{font:inherit;padding:9px 10px;border:1.5px solid var(--line);border-radius:10px;width:100%;background:#fff}
+.vgrid .ok{border-color:var(--green);background:#EAF6F0}.vgrid .bad{border-color:var(--red);background:#FBECEA}
+.big{font-family:"DM Serif Display",serif;font-size:32px;color:var(--teal)}
+/* tiles */
+.slot{min-height:54px;border:2px dashed var(--line);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;background:#fff}
+.pool{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tile{border:0;background:var(--tint);color:var(--ink);padding:8px 12px;border-radius:9px;font:inherit;font-weight:500;cursor:pointer}
+.slot .tile{background:var(--teal);color:#fff}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--teal);margin-right:6px}
+.tag.c{background:var(--peach);color:var(--coral)}
+@media(max-width:560px){.vgrid{grid-template-columns:1fr}.face .w{font-size:28px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Darlene oefent Nederlands</h1>
+  <p>Woorden, werkwoorden en voegwoorden uit les 1 en les 2 · Words, verbs and conjunctions from lesson 1 and 2</p>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+
+<script>
+const WORDS=[
+["moeilijk","difficult"],["makkelijk","easy"],["vervoegen","to conjugate"],["de vervoeging","the conjugation"],["de structuur","the structure"],["de invloed","the influence"],["de toekomst","the future"],["het verleden","the past"],["het onderwerp","the subject"],["het werkwoord","the verb"],["het voorbeeld","the example"],["voltooien","to complete"],["bakken","to bake, to fry"],["ontdekken","to discover"],["vorig / afgelopen","last, past (vorige week)"],["volgend / aankomend","next, upcoming"],["druk","busy"],["rustig","calm, quiet"],["het verschil","the difference"],["tegenwoordig","nowadays"],["zenuwachtig / nerveus","nervous"],["het enkelvoud","the singular"],["het meervoud","the plural"],["het feest","the party"],["de verjaardag","the birthday"],["jarig zijn","to have your birthday"],["feliciteren","to congratulate"],["dansen","to dance"],["de dans","the dance"],["raar","strange, weird"],["grappig","funny"],["saai","boring"],["net","just (a moment ago)"],["nog","still, yet"],["betekenen","to mean"],["de gootsteen","the (kitchen) sink"],["beledigend","offensive, insulting"],["de kring","the circle"],["het voegwoord","the conjunction"]
+];
+const VERBS=[
+// inf, vt ev, vt mv, vd, h/z, english
+["werken","werkte","werkten","gewerkt","h","to work"],["wonen","woonde","woonden","gewoond","h","to live"],["vieren","vierde","vierden","gevierd","h","to celebrate"],["dansen","danste","dansten","gedanst","h","to dance"],["ontdekken","ontdekte","ontdekten","ontdekt","h","to discover"],["verhuizen","verhuisde","verhuisden","verhuisd","z","to move house"],["voltooien","voltooide","voltooiden","voltooid","h","to complete"],["betekenen","betekende","betekenden","betekend","h","to mean"],["denken","dacht","dachten","gedacht","h","to think"],["kijken","keek","keken","gekeken","h","to watch, to look"],["blijven","bleef","bleven","gebleven","z","to stay"],["worden","werd","werden","geworden","z","to become"],["zitten","zat","zaten","gezeten","h","to sit"],["zijn","was","waren","geweest","z","to be"],["krijgen","kreeg","kregen","gekregen","h","to get, to receive"],["hebben","had","hadden","gehad","h","to have"],["zien","zag","zagen","gezien","h","to see"],["bakken","bakte","bakten","gebakken","h","to bake"],["gaan","ging","gingen","gegaan","z","to go"],["slapen","sliep","sliepen","geslapen","h","to sleep"]
+];
+const HZ=[
+["Vorig jaar ___ ik naar Almere verhuisd.","ben"],["Wij ___ de hele avond gedanst.","hebben"],["___ jij al eens in Brazilië geweest?","Ben"],["Mijn zus ___ een taart gebakken.","heeft"],["Na het feest ___ we nog lang gebleven.","zijn"],["Sanne ___ dertig geworden.","is"],["___ je de film al gezien?","Heb"],["Ik ___ een mooi cadeau gekregen.","heb"],["Gisteren ___ ik naar de markt gegaan.","ben"],["We ___ in een grote kring gezeten.","hebben"]
+];
+const HZOPTS=["heb","hebt","heeft","hebben","ben","bent","is","zijn"];
+const VT=[
+["Gisteren ___ ik mijn verjaardag. (vieren)","vierde"],["Vorige week ___ we in een grote kring. (zitten)","zaten"],["Ik ___ aan mijn familie in Brazilië. (denken)","dacht"],["Mijn collega ___ dertig. (worden)","werd"],["Afgelopen weekend ___ ik een grappige film. (kijken)","keek"],["We ___ tot middernacht op het feest. (blijven)","bleven"],["Vanochtend ___ ik iets raars in de gootsteen. (zien)","zag"],["Vroeger ___ ik in Fortaleza. (wonen)","woonde"],["Op het feest ___ iedereen. (dansen)","danste"],["Ik ___ een cadeau. (krijgen)","kreeg"]
+];
+const VD=[
+["Ik heb gisteren hard ___. (werken)","gewerkt"],["We hebben een mooi meer ___. (ontdekken)","ontdekt"],["Zij is vorig jaar ___. (verhuizen)","verhuisd"],["Heb je mijn bericht ___? (zien)","gezien"],["Ik heb lang over de vraag ___. (denken)","gedacht"],["Mijn zus heeft een taart ___. (bakken)","gebakken"],["We zijn thuis ___. (blijven)","gebleven"],["Hij heeft zijn verjaardag ___. (vieren)","gevierd"],["Ik ben op een Nederlandse verjaardag ___. (zijn)","geweest"],["Heb je de opdracht al ___? (voltooien)","voltooid"]
+];
+const VW=[
+["Ik woon in Almere, ___ ik werk in Amsterdam.","maar"],["Ik neem een paraplu mee, ___ het vandaag regent.","omdat"],["Ik ben moe, ___ ik ga vroeg naar bed.","dus"],["Ik bel je morgen, ___ ik tijd heb.","als"],["Ik kom niet, ___ ik heb geen tijd.","want"],["Ik denk ___ Mia de expositie mooi vindt.","dat"],["___ ik binnenkwam, zag ik iets geks.","Toen"],["Ik schilder ___ ik speel kalimba.","en"],["Ik was zenuwachtig, ___ ik kende niemand.","want"],["Ik vond het saai, ___ iedereen op zijn stoel bleef zitten.","omdat"]
+];
+const VWOPTS=["en","maar","want","dus","omdat","als","dat","toen"];
+const TILES=[
+{t:"omdat",s:"Ik kom niet, omdat ik ziek ben.",w:["Ik kom niet,","omdat","ik","ziek","ben."]},
+{t:"want",s:"Ik kom niet, want ik ben ziek.",w:["Ik kom niet,","want","ik","ben","ziek."]},
+{t:"omdat",s:"Ik leer Nederlands, omdat ik aan de VU wil studeren.",w:["Ik leer Nederlands,","omdat","ik","aan de VU","wil","studeren."]},
+{t:"als",s:"Ik bel je, als ik thuis ben.",w:["Ik bel je,","als","ik","thuis","ben."]},
+{t:"dat",s:"Ik denk dat de cursus in februari begint.",w:["Ik denk","dat","de cursus","in februari","begint."]},
+{t:"omdat",s:"Ik ben moe, omdat ik hard heb gewerkt.",w:["Ik ben moe,","omdat","ik","hard","heb","gewerkt."],alt:["Ik ben moe, omdat ik hard gewerkt heb."]},
+{t:"toekomst",s:"Ik ga over een jaar naar Brazilië reizen.",w:["Ik","ga","over een jaar","naar Brazilië","reizen."]},
+{t:"toekomst",s:"Volgend weekend ga ik een taart bakken.",w:["Volgend weekend","ga","ik","een taart","bakken."]},
+{t:"voltooide tijd",s:"Gisteren heb ik mijn verjaardag gevierd.",w:["Gisteren","heb","ik","mijn verjaardag","gevierd."]},
+{t:"verleden tijd",s:"Vorige maand woonde ik nog in Fortaleza.",w:["Vorige maand","woonde","ik","nog","in Fortaleza."]}
+];
+
+const norm=s=>s.toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const el=(tag,attrs={},html="")=>{const e=document.createElement(tag);for(const k in attrs){if(k==="on")for(const ev in attrs.on)e.addEventListener(ev,attrs.on[ev]);else e.setAttribute(k,attrs[k])}if(html)e.innerHTML=html;return e};
+
+const SECTIONS=[
+{id:"woorden",label:"Woorden",build:buildFlash},
+{id:"werkwoorden",label:"Werkwoorden",build:buildVerbs},
+{id:"hebben-zijn",label:"Hebben of zijn",build:buildHZ},
+{id:"verleden-tijd",label:"Verleden tijd",build:()=>buildType(VT,"Verleden tijd","Vul de verleden tijd in. Let op: één werkwoord, geen hebben of zijn!","<b>Verleden tijd = één werkwoord.</b> Regelmatig: stam + te/de ('t kofschip). Onregelmatig: leren. <i>Ik woonde in Fortaleza. Ik keek een film.</i>")},
+{id:"voltooid",label:"Voltooid deelwoord",build:()=>buildType(VD,"Voltooid deelwoord","Vul het voltooid deelwoord in.","<b>ge + stam + t/d.</b> 't kofschip → -t, anders -d. Geen ge- bij be-, ver-, ont-: <i>ontdekt, verhuisd</i>. Onregelmatig: <i>gezien, gebleven</i>.")},
+{id:"voegwoorden",label:"Voegwoorden",build:buildVW},
+{id:"zinnen",label:"Zinnen bouwen",build:buildTiles}
+];
+
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+SECTIONS.forEach(sec=>{
+  const b=el("button",{"data-id":sec.id,on:{click:()=>{location.hash=sec.id}}},sec.label);nav.appendChild(b);
+  const s=el("section",{id:"sec-"+sec.id});main.appendChild(s);sec.el=s;sec.built=false;
+});
+function show(){
+  const id=(location.hash||"").slice(1);const sec=SECTIONS.find(s=>s.id===id)||SECTIONS[0];
+  SECTIONS.forEach(s=>{s.el.classList.toggle("on",s===sec);nav.querySelector(`[data-id="${s.id}"]`).classList.toggle("on",s===sec)});
+  if(!sec.built){sec.build(sec.el);sec.built=true}
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",show);
+
+function buildFlash(root){
+  let deck=shuffle(WORDS),i=0,dir="nl",known=0;
+  root.innerHTML=`<h2>Woorden</h2><p class="intro">Klik op de kaart om hem om te draaien. Weet je het? Klik op <b>Ik weet het</b>.</p>
+  <div class="row" style="margin-bottom:8px"><button class="btn alt" id="fdir">Nederlands → Engels</button><button class="btn alt" id="fshuf">Schudden</button><span class="score" id="fscore"></span></div>
+  <div class="flash" id="fcard"><div class="in"><div class="face front"><div class="w" id="ff"></div><div class="s" id="ffs"></div></div><div class="face back"><div class="w" id="fb"></div><div class="s">klik om terug te draaien</div></div></div></div>
+  <div class="row"><button class="btn coral" id="fno">Nog niet</button><button class="btn" id="fyes">Ik weet het</button><span class="meta" id="fpos"></span></div>`;
+  const card=root.querySelector("#fcard");
+  const render=()=>{
+    if(i>=deck.length){card.classList.remove("flip");root.querySelector("#ff").textContent="Klaar!";root.querySelector("#ffs").textContent=`Je wist ${known} van de ${WORDS.length} woorden. Klik op Schudden om opnieuw te beginnen.`;root.querySelector("#fb").textContent="";root.querySelector("#fpos").textContent="";return}
+    const [nl,en]=deck[i];card.classList.remove("flip");
+    root.querySelector("#ff").textContent=dir==="nl"?nl:en;root.querySelector("#ffs").textContent=dir==="nl"?"Wat betekent dit?":"Hoe zeg je dit in het Nederlands? (met de/het)";
+    setTimeout(()=>{root.querySelector("#fb").textContent=dir==="nl"?en:nl},200);
+    root.querySelector("#fpos").textContent=`kaart ${i+1} van ${deck.length}`;root.querySelector("#fscore").textContent=`${known} geweten`;
+  };
+  card.onclick=()=>card.classList.toggle("flip");
+  root.querySelector("#fyes").onclick=()=>{if(i<deck.length){known++;i++;render()}};
+  root.querySelector("#fno").onclick=()=>{if(i<deck.length){deck.push(deck[i]);i++;render()}};
+  root.querySelector("#fshuf").onclick=()=>{deck=shuffle(WORDS);i=0;known=0;render()};
+  root.querySelector("#fdir").onclick=e=>{dir=dir==="nl"?"en":"nl";e.target.textContent=dir==="nl"?"Nederlands → Engels":"Engels → Nederlands";render()};
+  render();
+}
+
+function buildVerbs(root){
+  let deck=shuffle(VERBS),i=0,good=0,done=0;
+  root.innerHTML=`<h2>Werkwoorden</h2><p class="intro">Typ de verleden tijd (ik en wij), het voltooid deelwoord, en kies hebben of zijn.</p>
+  <div class="rule"><b>Voorbeeld:</b> werken → ik werkte · wij werkten · gewerkt · hebben</div>
+  <div class="box"><div class="row" style="justify-content:space-between"><div><div class="big" id="vinf"></div><div class="meta" id="ven"></div></div><span class="score" id="vscore"></span></div>
+  <div class="vgrid"><div><label>verleden tijd: ik</label><input id="v1" autocomplete="off" autocapitalize="off"></div><div><label>verleden tijd: wij</label><input id="v2" autocomplete="off" autocapitalize="off"></div><div><label>voltooid deelwoord</label><input id="v3" autocomplete="off" autocapitalize="off"></div></div>
+  <div class="vgrid"><div><label>hebben of zijn?</label><select id="v4"><option value="">kies…</option><option value="h">hebben</option><option value="z">zijn</option></select></div></div>
+  <div class="fb" id="vfb"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" id="vcheck">Controleer</button><button class="btn alt" id="vnext">Volgende</button></div></div>`;
+  const ids=["v1","v2","v3","v4"].map(x=>root.querySelector("#"+x));
+  const render=()=>{
+    if(i>=deck.length){deck=shuffle(VERBS);i=0}
+    const v=deck[i];root.querySelector("#vinf").textContent=v[0];root.querySelector("#ven").textContent=v[5];
+    ids.forEach(x=>{x.value="";x.classList.remove("ok","bad")});root.querySelector("#vfb").textContent="";root.querySelector("#vfb").className="fb";
+    root.querySelector("#vscore").textContent=`${good} van ${done} goed`;ids[0].focus();
+  };
+  root.querySelector("#vcheck").onclick=()=>{
+    const v=deck[i];const ans=[v[1],v[2],v[3],v[4]];let all=true;
+    ids.forEach((x,k)=>{const ok=norm(x.value)===ans[k];x.classList.toggle("ok",ok);x.classList.toggle("bad",!ok);if(!ok)all=false});
+    const fb=root.querySelector("#vfb");
+    if(all){fb.textContent="Helemaal goed!";fb.className="fb ok"}else{fb.innerHTML=`Goed is: ik <b>${v[1]}</b> · wij <b>${v[2]}</b> · <b>${v[4]==="h"?"heeft":"is"} ${v[3]}</b>`;fb.className="fb bad"}
+    if(!root.dataset.checked){done++;if(all)good++;root.dataset.checked="1"}
+    root.querySelector("#vscore").textContent=`${good} van ${done} goed`;
+  };
+  root.querySelector("#vnext").onclick=()=>{delete root.dataset.checked;i++;render()};
+  ids.forEach(x=>x.addEventListener("keydown",e=>{if(e.key==="Enter")root.querySelector("#vcheck").click()}));
+  render();
+}
+
+function scoreLine(root,total){const s=el("div",{class:"row",style:"margin:0 0 10px"});const sp=el("span",{class:"score"},`0 van ${total} goed`);s.appendChild(sp);root.appendChild(s);let n=0;return {hit(){n++;sp.textContent=`${n} van ${total} goed`}}}
+
+function buildHZ(root){
+  root.innerHTML=`<h2>Hebben of zijn?</h2><p class="intro">Klik op de goede vorm.</p><div class="rule"><b>Bijna altijd hebben.</b> Zijn bij: zijn (geweest), gaan, komen, blijven, worden, verhuizen.</div>`;
+  const sc=scoreLine(root,HZ.length);const box=el("div",{class:"box"});root.appendChild(box);
+  HZ.forEach(([p,a])=>{
+    const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p.replace("___","<b>___</b>")));
+    const opts=el("div");let answered=false,first=true;
+    HZOPTS.forEach(o=>{const b=el("button",{class:"choice"},o);b.onclick=()=>{if(answered)return;const ok=o.toLowerCase()===a.toLowerCase();b.classList.add(ok?"ok":"bad");if(ok){answered=true;if(first)sc.hit()}first=false};opts.appendChild(b)});
+    q.appendChild(opts);box.appendChild(q);
+  });
+}
+
+function buildType(data,title,intro,rule){
+  return (root=>{
+    root.innerHTML=`<h2>${title}</h2><p class="intro">${intro}</p><div class="rule">${rule}</div>`;
+    const sc=scoreLine(root,data.length);const box=el("div",{class:"box"});root.appendChild(box);
+    data.forEach(([p,a])=>{
+      const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p.replace("___","<b>___</b>")));
+      const row=el("div",{class:"row"});const inp=el("input",{type:"text",autocomplete:"off",autocapitalize:"off"});const b=el("button",{class:"btn alt"},"Check");const fb=el("div",{class:"fb"});
+      let scored=false,tries=0;
+      const check=()=>{const ok=norm(inp.value)===norm(a);inp.classList.toggle("ok",ok);inp.classList.toggle("bad",!ok);tries++;
+        if(ok){fb.textContent="Goed!";fb.className="fb ok";if(!scored&&tries===1){sc.hit()}scored=true}
+        else{fb.innerHTML=tries>=2?`Goed is: <b>${a}</b>`:"Nog niet goed. Probeer het nog een keer.";fb.className="fb bad"}};
+      b.onclick=check;inp.addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+      row.appendChild(inp);row.appendChild(b);q.appendChild(row);q.appendChild(fb);box.appendChild(q);
+    });
+  });
+}
+
+function buildVW(root){
+  root.innerHTML=`<h2>Voegwoorden</h2><p class="intro">Kies het goede voegwoord. Kijk goed waar het werkwoord staat!</p>
+  <div class="rule"><span class="tag">nevenschikkend</span> en, maar, of, want, dus: <b>niets verandert</b>. <i>Ik kom niet, want ik ben ziek.</i><br><span class="tag c">onderschikkend</span> omdat, als, dat, wanneer, toen: <b>werkwoord naar het eind</b>. <i>Ik kom niet, omdat ik ziek ben.</i></div>`;
+  const sc=scoreLine(root,VW.length);const box=el("div",{class:"box"});root.appendChild(box);
+  VW.forEach(([p,a])=>{
+    const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p.replace("___","<b>___</b>")));
+    const opts=el("div");let answered=false,first=true;
+    VWOPTS.forEach(o=>{const b=el("button",{class:"choice"},o);b.onclick=()=>{if(answered)return;const ok=o.toLowerCase()===a.toLowerCase();b.classList.add(ok?"ok":"bad");if(ok){answered=true;if(first)sc.hit()}first=false};opts.appendChild(b)});
+    q.appendChild(opts);box.appendChild(q);
+  });
+}
+
+function buildTiles(root){
+  let order=shuffle(TILES.map((_,k)=>k)),i=0,good=0;
+  root.innerHTML=`<h2>Zinnen bouwen</h2><p class="intro">Klik de stukjes in de goede volgorde. Klik op een stukje in de zin om het terug te zetten.</p>
+  <div class="box"><div class="row" style="justify-content:space-between"><span class="tag" id="ttag"></span><span class="score" id="tscore"></span></div>
+  <div class="slot" id="tslot"></div><div class="pool" id="tpool"></div><div class="fb" id="tfb"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" id="tcheck">Controleer</button><button class="btn alt" id="tnext">Volgende zin</button></div></div>
+  <div class="rule">Tip: na <b>omdat, als, dat</b> gaat het werkwoord naar het eind. Bij de <b>toekomst</b>: gaan op plek 2, het hele werkwoord aan het eind.</div>`;
+  const slot=root.querySelector("#tslot"),pool=root.querySelector("#tpool"),fb=root.querySelector("#tfb");let checked=false;
+  const render=()=>{
+    if(i>=order.length){order=shuffle(order);i=0}
+    const it=TILES[order[i]];checked=false;slot.innerHTML="";pool.innerHTML="";fb.textContent="";fb.className="fb";
+    root.querySelector("#ttag").textContent=it.t;root.querySelector("#tscore").textContent=`${good} zinnen goed`;
+    let words=shuffle(it.w);while(words.join(" ")===it.w.join(" ")&&it.w.length>2)words=shuffle(it.w);
+    words.forEach(w=>{const b=el("button",{class:"tile"},w);b.onclick=()=>{(b.parentNode===pool?slot:pool).appendChild(b)};pool.appendChild(b)});
+  };
+  root.querySelector("#tcheck").onclick=()=>{
+    const it=TILES[order[i]];const built=[...slot.children].map(b=>b.textContent).join(" ");
+    const ok=[it.s,...(it.alt||[])].some(s=>norm(s)===norm(built));
+    if(pool.children.length){fb.textContent="Gebruik alle stukjes.";fb.className="fb bad";return}
+    if(ok){fb.textContent="Goed! "+it.s;fb.className="fb ok";if(!checked){good++;root.querySelector("#tscore").textContent=`${good} zinnen goed`}}
+    else{fb.innerHTML="Nog niet goed. Goed is: <b>"+it.s+"</b>";fb.className="fb bad"}
+    checked=true;
+  };
+  root.querySelector("#tnext").onclick=()=>{i++;render()};
+  render();
+}
+show();
+</script>
+</body>
+</html>
