@@ -117,8 +117,8 @@ const SECTIONS=[
 {id:"woorden",label:"Woorden",build:buildFlash},
 {id:"werkwoorden",label:"Werkwoorden",build:buildVerbs},
 {id:"hebben-zijn",label:"Hebben of zijn",build:buildHZ},
-{id:"verleden-tijd",label:"Verleden tijd",build:()=>buildType(VT,"Verleden tijd","Vul de verleden tijd in. Let op: één werkwoord, geen hebben of zijn!","<b>Verleden tijd = één werkwoord.</b> Regelmatig: stam + te/de ('t kofschip). Onregelmatig: leren. <i>Ik woonde in Fortaleza. Ik keek een film.</i>")},
-{id:"voltooid",label:"Voltooid deelwoord",build:()=>buildType(VD,"Voltooid deelwoord","Vul het voltooid deelwoord in.","<b>ge + stam + t/d.</b> 't kofschip → -t, anders -d. Geen ge- bij be-, ver-, ont-: <i>ontdekt, verhuisd</i>. Onregelmatig: <i>gezien, gebleven</i>.")},
+{id:"verleden-tijd",label:"Verleden tijd",build:r=>buildType(VT,"Verleden tijd","Vul de verleden tijd in. Let op: één werkwoord, geen hebben of zijn!","<b>Verleden tijd = één werkwoord.</b> Regelmatig: stam + te/de ('t kofschip). Onregelmatig: leren. <i>Ik woonde in Fortaleza. Ik keek een film.</i>")(r)},
+{id:"voltooid",label:"Voltooid deelwoord",build:r=>buildType(VD,"Voltooid deelwoord","Vul het voltooid deelwoord in.","<b>ge + stam + t/d.</b> 't kofschip → -t, anders -d. Geen ge- bij be-, ver-, ont-: <i>ontdekt, verhuisd</i>. Onregelmatig: <i>gezien, gebleven</i>.")(r)},
 {id:"voegwoorden",label:"Voegwoorden",build:buildVW},
 {id:"zinnen",label:"Zinnen bouwen",build:buildTiles}
 ];
