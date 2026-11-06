@@ -7,18 +7,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--teal:#1F4E5F;--teal2:#2E6E82;--coral:#E07A5F;--green:#3D9970;--red:#C0392B;--bg:#F6F8F9;--card:#fff;--tint:#EEF4F5;--peach:#FDF1EC;--ink:#1E2A32;--muted:#5E6E76;--line:#DCE4E7}
+:root{--teal:#1F4E5F;--coral:#E07A5F;--green:#3D9970;--red:#C0392B;--bg:#F6F8F9;--card:#fff;--tint:#EEF4F5;--peach:#FDF1EC;--ink:#1E2A32;--muted:#5E6E76;--line:#DCE4E7}
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.45}
-header{background:var(--teal);color:#fff;padding:28px 20px 20px}
+header{background:var(--teal);color:#fff;padding:26px 20px 18px}
 header h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:30px;margin:0 0 4px}
 header p{margin:0;opacity:.85;font-size:14px}
-nav{display:flex;gap:6px;overflow-x:auto;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav{display:flex;gap:6px;overflow-x:auto;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;scrollbar-width:thin}
 nav button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;font-size:14px;font-weight:500;cursor:pointer}
 nav button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+nav button .new{font-size:10px;font-weight:700;background:var(--coral);color:#fff;border-radius:999px;padding:1px 6px;margin-left:5px;vertical-align:1px}
+main{max-width:780px;margin:0 auto;padding:20px 16px 60px}
 section{display:none}section.on{display:block}
 h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:26px;color:var(--teal);margin:4px 0 6px}
+h3{font-size:16px;margin:18px 0 8px;color:var(--teal)}
 .intro{color:var(--muted);margin:0 0 16px;font-size:15px}
 .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
 .rule{background:var(--tint);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:15px}
@@ -28,7 +30,18 @@ h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:26px;color:var
 .btn{border:0;background:var(--teal);color:#fff;padding:10px 16px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
 .btn.alt{background:#fff;color:var(--teal);border:1px solid var(--teal)}
 .btn.coral{background:var(--coral)}
-.btn:disabled{opacity:.45;cursor:default}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--teal);color:#fff}
+/* home */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.tile-card:hover{border-color:var(--teal)}
+.tile-card .t{font-weight:700;font-size:16px;margin-bottom:4px}
+.tile-card .d{font-size:13px;color:var(--muted);margin-bottom:10px}
+.bar{height:6px;background:var(--tint);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:99px}
+.lesson{font-size:11px;font-weight:700;color:var(--coral);letter-spacing:.04em;text-transform:uppercase}
 /* flashcards */
 .flash{perspective:900px;height:220px;margin:6px 0 14px;cursor:pointer}
 .flash .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
@@ -43,19 +56,19 @@ h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:26px;color:var
 .q{padding:12px 0;border-bottom:1px solid var(--line)}
 .q:last-child{border-bottom:0}
 .q .p{margin-bottom:8px}
-.q input[type=text]{font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;width:100%;max-width:260px;background:#fff}
-.q input.ok{border-color:var(--green);background:#EAF6F0}
-.q input.bad{border-color:var(--red);background:#FBECEA}
+.q input[type=text]{font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;width:100%;max-width:340px;background:#fff}
+input.ok,select.ok{border-color:var(--green)!important;background:#EAF6F0!important}
+input.bad,select.bad{border-color:var(--red)!important;background:#FBECEA!important}
 .fb{font-size:14px;margin-top:6px;min-height:1em}
 .fb.ok{color:var(--green)}.fb.bad{color:var(--red)}
-.choice{border:1.5px solid var(--line);background:#fff;padding:8px 14px;border-radius:10px;font:inherit;cursor:pointer;margin:0 6px 6px 0}
+.choice{border:1.5px solid var(--line);background:#fff;padding:8px 14px;border-radius:10px;font:inherit;cursor:pointer;margin:0 6px 6px 0;text-align:left}
 .choice.ok{border-color:var(--green);background:#EAF6F0;color:var(--green);font-weight:600}
 .choice.bad{border-color:var(--red);background:#FBECEA;color:var(--red)}
 .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
 .vgrid label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
 .vgrid input,.vgrid select{font:inherit;padding:9px 10px;border:1.5px solid var(--line);border-radius:10px;width:100%;background:#fff}
-.vgrid .ok{border-color:var(--green);background:#EAF6F0}.vgrid .bad{border-color:var(--red);background:#FBECEA}
-.big{font-family:"DM Serif Display",serif;font-size:32px;color:var(--teal)}
+.big{font-family:"DM Serif Display",serif;font-size:34px;color:var(--teal)}
+.huge{font-family:"DM Serif Display",serif;font-size:44px;color:var(--teal);text-align:center;margin:10px 0}
 /* tiles */
 .slot{min-height:54px;border:2px dashed var(--line);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;background:#fff}
 .pool{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
@@ -63,40 +76,56 @@ h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:26px;color:var
 .slot .tile{background:var(--teal);color:#fff}
 .tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--teal);margin-right:6px}
 .tag.c{background:var(--peach);color:var(--coral)}
-@media(max-width:560px){.vgrid{grid-template-columns:1fr}.face .w{font-size:28px}}
+table.ref{border-collapse:collapse;width:100%;font-size:14px}
+table.ref th{background:var(--teal);color:#fff;text-align:left;padding:7px 9px}
+table.ref td{padding:7px 9px;border-bottom:1px solid var(--line)}
+table.ref tr:nth-child(even) td{background:var(--tint)}
+.kof{display:flex;gap:6px;justify-content:center;margin:6px 0 14px}
+.kof span{width:36px;height:36px;border-radius:9px;background:var(--peach);color:var(--coral);font-weight:700;display:flex;align-items:center;justify-content:center}
+@media(max-width:560px){.vgrid{grid-template-columns:1fr}.face .w{font-size:28px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
   <h1>Darlene oefent Nederlands</h1>
-  <p>Woorden, werkwoorden en voegwoorden uit les 1 en les 2 · Words, verbs and conjunctions from lesson 1 and 2</p>
+  <p>Alles uit les 1, 2 en 3 · Everything from lessons 1, 2 and 3</p>
 </header>
 <nav id="nav"></nav>
 <main id="main"></main>
 
 <script>
+/* ---------- data ---------- */
 const WORDS=[
-["moeilijk","difficult"],["makkelijk","easy"],["vervoegen","to conjugate"],["de vervoeging","the conjugation"],["de structuur","the structure"],["de invloed","the influence"],["de toekomst","the future"],["het verleden","the past"],["het onderwerp","the subject"],["het werkwoord","the verb"],["het voorbeeld","the example"],["voltooien","to complete"],["bakken","to bake, to fry"],["ontdekken","to discover"],["vorig / afgelopen","last, past (vorige week)"],["volgend / aankomend","next, upcoming"],["druk","busy"],["rustig","calm, quiet"],["het verschil","the difference"],["tegenwoordig","nowadays"],["zenuwachtig / nerveus","nervous"],["het enkelvoud","the singular"],["het meervoud","the plural"],["het feest","the party"],["de verjaardag","the birthday"],["jarig zijn","to have your birthday"],["feliciteren","to congratulate"],["dansen","to dance"],["de dans","the dance"],["raar","strange, weird"],["grappig","funny"],["saai","boring"],["net","just (a moment ago)"],["nog","still, yet"],["betekenen","to mean"],["de gootsteen","the (kitchen) sink"],["beledigend","offensive, insulting"],["de kring","the circle"],["het voegwoord","the conjunction"]
+// les 1
+["moeilijk","difficult",1],["makkelijk","easy",1],["vervoegen","to conjugate",1],["de vervoeging","the conjugation",1],["de structuur","the structure",1],["de invloed","the influence",1],["de toekomst","the future",1],["het verleden","the past",1],["het onderwerp","the subject",1],["het werkwoord","the verb",1],["het voorbeeld","the example",1],["voltooien","to complete",1],["bakken","to bake, to fry",1],["ontdekken","to discover",1],
+// les 2
+["vorig / afgelopen","last, past (vorige week)",2],["volgend / aankomend","next, upcoming",2],["druk","busy",2],["rustig","calm, quiet",2],["het verschil","the difference",2],["tegenwoordig","nowadays",2],["zenuwachtig / nerveus","nervous",2],["het enkelvoud","the singular",2],["het meervoud","the plural",2],["het feest","the party",2],["de verjaardag","the birthday",2],["jarig zijn","to have your birthday",2],["feliciteren","to congratulate",2],["dansen","to dance",2],["de dans","the dance",2],["raar","strange, weird",2],["grappig","funny",2],["saai","boring",2],["net","just (a moment ago)",2],["nog","still, yet",2],["betekenen","to mean",2],["de gootsteen","the (kitchen) sink",2],["beledigend","offensive, insulting",2],["de kring","the circle",2],["het voegwoord","the conjunction",2],
+// les 3
+["beleefd","polite",3],["onbeleefd","rude, impolite",3],["het verzoek","the request",3],["de indruk","the impression",3],["de intake","the intake (entry test)",3],["de afspraak","the appointment",3],["de aanhef","the opening line (of a letter)",3],["de afsluiting","the closing",3],["Geachte heer, mevrouw,","Dear Sir or Madam,",3],["Met vriendelijke groet,","Kind regards,",3],["Alvast bedankt","Thanks in advance",3],["het advies","the advice",3],["het alternatief","the alternative",3],["de verhuurder","the landlord",3],["kapot","broken",3]
 ];
+// [inf, vt ev, vt mv, vd, h/z, english, R/S]
 const VERBS=[
-// inf, vt ev, vt mv, vd, h/z, english
-["werken","werkte","werkten","gewerkt","h","to work"],["wonen","woonde","woonden","gewoond","h","to live"],["vieren","vierde","vierden","gevierd","h","to celebrate"],["dansen","danste","dansten","gedanst","h","to dance"],["ontdekken","ontdekte","ontdekten","ontdekt","h","to discover"],["verhuizen","verhuisde","verhuisden","verhuisd","z","to move house"],["voltooien","voltooide","voltooiden","voltooid","h","to complete"],["betekenen","betekende","betekenden","betekend","h","to mean"],["denken","dacht","dachten","gedacht","h","to think"],["kijken","keek","keken","gekeken","h","to watch, to look"],["blijven","bleef","bleven","gebleven","z","to stay"],["worden","werd","werden","geworden","z","to become"],["zitten","zat","zaten","gezeten","h","to sit"],["zijn","was","waren","geweest","z","to be"],["krijgen","kreeg","kregen","gekregen","h","to get, to receive"],["hebben","had","hadden","gehad","h","to have"],["zien","zag","zagen","gezien","h","to see"],["bakken","bakte","bakten","gebakken","h","to bake"],["gaan","ging","gingen","gegaan","z","to go"],["slapen","sliep","sliepen","geslapen","h","to sleep"]
+["werken","werkte","werkten","gewerkt","h","to work","R"],["wonen","woonde","woonden","gewoond","h","to live","R"],["vieren","vierde","vierden","gevierd","h","to celebrate","R"],["dansen","danste","dansten","gedanst","h","to dance","R"],["ontdekken","ontdekte","ontdekten","ontdekt","h","to discover","R"],["verhuizen","verhuisde","verhuisden","verhuisd","z","to move house","R"],["voltooien","voltooide","voltooiden","voltooid","h","to complete","R"],["betekenen","betekende","betekenden","betekend","h","to mean","R"],["maken","maakte","maakten","gemaakt","h","to make","R"],["koken","kookte","kookten","gekookt","h","to cook","R"],["fietsen","fietste","fietsten","gefietst","h","to cycle","R"],["spelen","speelde","speelden","gespeeld","h","to play","R"],["leren","leerde","leerden","geleerd","h","to learn","R"],["bellen","belde","belden","gebeld","h","to call","R"],["wachten","wachtte","wachtten","gewacht","h","to wait","R"],["praten","praatte","praatten","gepraat","h","to talk","R"],["luisteren","luisterde","luisterden","geluisterd","h","to listen","R"],["wandelen","wandelde","wandelden","gewandeld","h","to walk","R"],["leven","leefde","leefden","geleefd","h","to live (be alive)","R"],["betalen","betaalde","betaalden","betaald","h","to pay","R"],["vertellen","vertelde","vertelden","verteld","h","to tell","R"],["ontmoeten","ontmoette","ontmoetten","ontmoet","h","to meet","R"],["gebruiken","gebruikte","gebruikten","gebruikt","h","to use","R"],["proberen","probeerde","probeerden","geprobeerd","h","to try","R"],["studeren","studeerde","studeerden","gestudeerd","h","to study","R"],["missen","miste","misten","gemist","h","to miss","R"],["hopen","hoopte","hoopten","gehoopt","h","to hope","R"],["horen","hoorde","hoorden","gehoord","h","to hear","R"],["zetten","zette","zetten","gezet","h","to put","R"],["antwoorden","antwoordde","antwoordden","geantwoord","h","to answer","R"],["verdienen","verdiende","verdienden","verdiend","h","to earn","R"],["sturen","stuurde","stuurden","gestuurd","h","to send","R"],["schilderen","schilderde","schilderden","geschilderd","h","to paint","R"],["kamperen","kampeerde","kampeerden","gekampeerd","h","to camp","R"],
+["beginnen","begon","begonnen","begonnen","z","to begin","S"],["blijven","bleef","bleven","gebleven","z","to stay","S"],["brengen","bracht","brachten","gebracht","h","to bring","S"],["denken","dacht","dachten","gedacht","h","to think","S"],["doen","deed","deden","gedaan","h","to do","S"],["drinken","dronk","dronken","gedronken","h","to drink","S"],["eten","at","aten","gegeten","h","to eat","S"],["gaan","ging","gingen","gegaan","z","to go","S"],["geven","gaf","gaven","gegeven","h","to give","S"],["hebben","had","hadden","gehad","h","to have","S"],["helpen","hielp","hielpen","geholpen","h","to help","S"],["kijken","keek","keken","gekeken","h","to watch","S"],["komen","kwam","kwamen","gekomen","z","to come","S"],["kopen","kocht","kochten","gekocht","h","to buy","S"],["krijgen","kreeg","kregen","gekregen","h","to get","S"],["lezen","las","lazen","gelezen","h","to read","S"],["liggen","lag","lagen","gelegen","h","to lie (down)","S"],["nemen","nam","namen","genomen","h","to take","S"],["schrijven","schreef","schreven","geschreven","h","to write","S"],["slapen","sliep","sliepen","geslapen","h","to sleep","S"],["sluiten","sloot","sloten","gesloten","h","to close","S"],["spreken","sprak","spraken","gesproken","h","to speak","S"],["staan","stond","stonden","gestaan","h","to stand","S"],["vertrekken","vertrok","vertrokken","vertrokken","z","to leave","S"],["vinden","vond","vonden","gevonden","h","to find","S"],["vragen","vroeg","vroegen","gevraagd","h","to ask","S"],["weten","wist","wisten","geweten","h","to know","S"],["worden","werd","werden","geworden","z","to become","S"],["zien","zag","zagen","gezien","h","to see","S"],["zijn","was","waren","geweest","z","to be","S"],["zingen","zong","zongen","gezongen","h","to sing","S"],["zitten","zat","zaten","gezeten","h","to sit","S"],["zoeken","zocht","zochten","gezocht","h","to look for","S"],["bakken","bakte","bakten","gebakken","h","to bake","S"],["wassen","waste","wasten","gewassen","h","to wash","S"],["lachen","lachte","lachten","gelachen","h","to laugh","S"]
 ];
-const HZ=[
-["Vorig jaar ___ ik naar Almere verhuisd.","ben"],["Wij ___ de hele avond gedanst.","hebben"],["___ jij al eens in Brazilië geweest?","Ben"],["Mijn zus ___ een taart gebakken.","heeft"],["Na het feest ___ we nog lang gebleven.","zijn"],["Sanne ___ dertig geworden.","is"],["___ je de film al gezien?","Heb"],["Ik ___ een mooi cadeau gekregen.","heb"],["Gisteren ___ ik naar de markt gegaan.","ben"],["We ___ in een grote kring gezeten.","hebben"]
-];
+const KOF="tkfscp".split("");
+const HZ=[["Vorig jaar ___ ik naar Almere verhuisd.","ben"],["Wij ___ de hele avond gedanst.","hebben"],["___ jij al eens in Brazilië geweest?","Ben"],["Mijn zus ___ een taart gebakken.","heeft"],["Na het feest ___ we nog lang gebleven.","zijn"],["Sanne ___ dertig geworden.","is"],["___ je de film al gezien?","Heb"],["Ik ___ een mooi cadeau gekregen.","heb"],["Gisteren ___ ik naar de markt gegaan.","ben"],["De cursus ___ in februari begonnen.","is"],["Ik ___ de huisarts gebeld.","heb"],["Hoe laat ___ de trein vertrokken?","is"]];
 const HZOPTS=["heb","hebt","heeft","hebben","ben","bent","is","zijn"];
-const VT=[
-["Gisteren ___ ik mijn verjaardag. (vieren)","vierde"],["Vorige week ___ we in een grote kring. (zitten)","zaten"],["Ik ___ aan mijn familie in Brazilië. (denken)","dacht"],["Mijn collega ___ dertig. (worden)","werd"],["Afgelopen weekend ___ ik een grappige film. (kijken)","keek"],["We ___ tot middernacht op het feest. (blijven)","bleven"],["Vanochtend ___ ik iets raars in de gootsteen. (zien)","zag"],["Vroeger ___ ik in Fortaleza. (wonen)","woonde"],["Op het feest ___ iedereen. (dansen)","danste"],["Ik ___ een cadeau. (krijgen)","kreeg"]
-];
-const VD=[
-["Ik heb gisteren hard ___. (werken)","gewerkt"],["We hebben een mooi meer ___. (ontdekken)","ontdekt"],["Zij is vorig jaar ___. (verhuizen)","verhuisd"],["Heb je mijn bericht ___? (zien)","gezien"],["Ik heb lang over de vraag ___. (denken)","gedacht"],["Mijn zus heeft een taart ___. (bakken)","gebakken"],["We zijn thuis ___. (blijven)","gebleven"],["Hij heeft zijn verjaardag ___. (vieren)","gevierd"],["Ik ben op een Nederlandse verjaardag ___. (zijn)","geweest"],["Heb je de opdracht al ___? (voltooien)","voltooid"]
-];
-const VW=[
-["Ik woon in Almere, ___ ik werk in Amsterdam.","maar"],["Ik neem een paraplu mee, ___ het vandaag regent.","omdat"],["Ik ben moe, ___ ik ga vroeg naar bed.","dus"],["Ik bel je morgen, ___ ik tijd heb.","als"],["Ik kom niet, ___ ik heb geen tijd.","want"],["Ik denk ___ Mia de expositie mooi vindt.","dat"],["___ ik binnenkwam, zag ik iets geks.","Toen"],["Ik schilder ___ ik speel kalimba.","en"],["Ik was zenuwachtig, ___ ik kende niemand.","want"],["Ik vond het saai, ___ iedereen op zijn stoel bleef zitten.","omdat"]
-];
+const VT=[["Gisteren ___ ik mijn verjaardag. (vieren)","vierde"],["Vorige week ___ we in een grote kring. (zitten)","zaten"],["Ik ___ aan mijn familie in Brazilië. (denken)","dacht"],["Mijn collega ___ dertig. (worden)","werd"],["Afgelopen weekend ___ ik een grappige film. (kijken)","keek"],["We ___ tot middernacht op het feest. (blijven)","bleven"],["Vanochtend ___ ik iets raars in de gootsteen. (zien)","zag"],["Vroeger ___ ik in Fortaleza. (wonen)","woonde"],["Op het feest ___ iedereen. (dansen)","danste"],["Ik ___ een cadeau. (krijgen)","kreeg"],["We ___ een uur op de bus. (wachten)","wachtten"],["Zij ___ een lange mail. (schrijven)","schreef"]];
+const VD=[["Ik heb gisteren hard ___. (werken)","gewerkt"],["We hebben een mooi meer ___. (ontdekken)","ontdekt"],["Zij is vorig jaar ___. (verhuizen)","verhuisd"],["Heb je mijn bericht ___? (zien)","gezien"],["Ik heb lang over de vraag ___. (denken)","gedacht"],["Mijn zus heeft een taart ___. (bakken)","gebakken"],["We zijn thuis ___. (blijven)","gebleven"],["Hij heeft zijn verjaardag ___. (vieren)","gevierd"],["Ik ben op een Nederlandse verjaardag ___. (zijn)","geweest"],["Heb je de rekening al ___? (betalen)","betaald"],["We hebben een uur ___. (praten)","gepraat"],["Ik heb de VU een mail ___. (sturen)","gestuurd"]];
+const VW=[["Ik woon in Almere, ___ ik werk in Amsterdam.","maar"],["Ik neem een paraplu mee, ___ het vandaag regent.","omdat"],["Ik ben moe, ___ ik ga vroeg naar bed.","dus"],["Ik bel je morgen, ___ ik tijd heb.","als"],["Ik kom niet, ___ ik heb geen tijd.","want"],["Ik denk ___ Mia de expositie mooi vindt.","dat"],["___ ik binnenkwam, zag ik iets geks.","Toen"],["Ik schilder ___ ik speel kalimba.","en"],["Ik was zenuwachtig, ___ ik kende niemand.","want"],["Ik vond het saai, ___ iedereen op zijn stoel bleef zitten.","omdat"]];
 const VWOPTS=["en","maar","want","dus","omdat","als","dat","toen"];
-const TILES=[
+const ZOUMC=[
+{p:"Je wilt beleefd om hulp vragen.",o:["Zou u mij kunnen helpen?","Zou u mij helpen kunnen?","U zou mij kunnen helpen?"],a:0},
+{p:"Je wilt een afspraak maken.",o:["Ik zou graag maken een afspraak.","Ik zou graag een afspraak willen maken.","Ik graag zou een afspraak willen maken."],a:1},
+{p:"Je wilt informatie over de cursus.",o:["Zou u mij informatie over de cursus kunnen sturen?","Zou u kunnen sturen mij informatie?","Zou u mij informatie sturen kunnen?"],a:0},
+{p:"Dinsdag kan niet. Je stelt een andere dag voor.",o:["Zou donderdag ook kunnen?","Zou ook kunnen donderdag?","Donderdag zou ook kunnen?"],a:0},
+{p:"Wat is het meest beleefd?",o:["Stuur mij de documenten.","Kunt u mij de documenten sturen?","Zou u mij de documenten kunnen sturen?"],a:2},
+{p:"Wij willen graag meedoen.",o:["Wij zou graag willen meedoen.","Wij zouden graag willen meedoen.","Wij zouden graag meedoen willen."],a:1},
+{p:"Je geeft een advies.",o:["Ik zou eerst de website lezen.","Ik zou lezen eerst de website.","Ik zou eerst lezen de website."],a:0},
+{p:"Je vraagt toestemming.",o:["Zou ik een vraag stellen mogen?","Zou ik een vraag mogen stellen?","Zou ik mogen een vraag stellen?"],a:1}
+];
+const TILES_ZIN=[
 {t:"omdat",s:"Ik kom niet, omdat ik ziek ben.",w:["Ik kom niet,","omdat","ik","ziek","ben."]},
 {t:"want",s:"Ik kom niet, want ik ben ziek.",w:["Ik kom niet,","want","ik","ben","ziek."]},
 {t:"omdat",s:"Ik leer Nederlands, omdat ik aan de VU wil studeren.",w:["Ik leer Nederlands,","omdat","ik","aan de VU","wil","studeren."]},
@@ -104,155 +133,231 @@ const TILES=[
 {t:"dat",s:"Ik denk dat de cursus in februari begint.",w:["Ik denk","dat","de cursus","in februari","begint."]},
 {t:"omdat",s:"Ik ben moe, omdat ik hard heb gewerkt.",w:["Ik ben moe,","omdat","ik","hard","heb","gewerkt."],alt:["Ik ben moe, omdat ik hard gewerkt heb."]},
 {t:"toekomst",s:"Ik ga over een jaar naar Brazilië reizen.",w:["Ik","ga","over een jaar","naar Brazilië","reizen."]},
-{t:"toekomst",s:"Volgend weekend ga ik een taart bakken.",w:["Volgend weekend","ga","ik","een taart","bakken."]},
 {t:"voltooide tijd",s:"Gisteren heb ik mijn verjaardag gevierd.",w:["Gisteren","heb","ik","mijn verjaardag","gevierd."]},
 {t:"verleden tijd",s:"Vorige maand woonde ik nog in Fortaleza.",w:["Vorige maand","woonde","ik","nog","in Fortaleza."]}
 ];
+const TILES_VRAAG=[
+{t:"vraag",s:"Wat heb je gisteren gedaan?",w:["Wat","heb","je","gisteren","gedaan?"]},
+{t:"vraag",s:"Wanneer ben je naar Nederland gekomen?",w:["Wanneer","ben","je","naar Nederland","gekomen?"]},
+{t:"vraag",s:"Heb je de film al gezien?",w:["Heb","je","de film","al","gezien?"]},
+{t:"vraag",s:"Ben je al eens in Brazilië geweest?",w:["Ben","je","al eens","in Brazilië","geweest?"]},
+{t:"vraag",s:"Waar woonde je vroeger?",w:["Waar","woonde","je","vroeger?"]},
+{t:"vraag",s:"Wat wilde je worden toen je klein was?",w:["Wat","wilde","je","worden","toen je klein was?"]},
+{t:"vraag",s:"Welk boek heb je het laatst gelezen?",w:["Welk boek","heb","je","het laatst","gelezen?"]},
+{t:"vraag",s:"Hoe lang heb je in Fortaleza gewoond?",w:["Hoe lang","heb","je","in Fortaleza","gewoond?"]}
+];
+const TILES_ZOU=[
+{t:"zou",s:"Ik zou graag een afspraak willen maken.",w:["Ik","zou","graag","een afspraak","willen","maken."]},
+{t:"zou",s:"Zou u mij kunnen bellen?",w:["Zou","u","mij","kunnen","bellen?"]},
+{t:"zou",s:"Zou donderdag ook kunnen?",w:["Zou","donderdag","ook","kunnen?"]},
+{t:"zou",s:"Zou u mij de informatie kunnen sturen?",w:["Zou","u","mij","de informatie","kunnen","sturen?"]},
+{t:"zou",s:"Ik zou graag meer over de intake willen weten.",w:["Ik","zou","graag","meer","over de intake","willen","weten."],alt:["Ik zou graag meer willen weten over de intake."]},
+{t:"zou",s:"Zou ik een vraag mogen stellen?",w:["Zou","ik","een vraag","mogen","stellen?"]},
+{t:"zou",s:"Zou u mij kunnen vertellen wanneer de intake is?",w:["Zou","u","mij","kunnen","vertellen","wanneer","de intake","is?"]}
+];
 
+/* ---------- helpers ---------- */
 const norm=s=>s.toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const el=(tag,attrs={},html="")=>{const e=document.createElement(tag);for(const k in attrs){if(k==="on")for(const ev in attrs.on)e.addEventListener(ev,attrs.on[ev]);else e.setAttribute(k,attrs[k])}if(html)e.innerHTML=html;return e};
+const store={get(k){try{return JSON.parse(localStorage.getItem("dar_"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("dar_"+k,JSON.stringify(v))}catch(e){}}};
+function saveBest(id,n,total){const b=store.get("best")||{};const pct=Math.round(100*n/total);if(!b[id]||pct>b[id])b[id]=pct;store.set("best",b)}
 
 const SECTIONS=[
-{id:"woorden",label:"Woorden",build:buildFlash},
-{id:"werkwoorden",label:"Werkwoorden",build:buildVerbs},
-{id:"hebben-zijn",label:"Hebben of zijn",build:buildHZ},
-{id:"verleden-tijd",label:"Verleden tijd",build:r=>buildType(VT,"Verleden tijd","Vul de verleden tijd in. Let op: één werkwoord, geen hebben of zijn!","<b>Verleden tijd = één werkwoord.</b> Regelmatig: stam + te/de ('t kofschip). Onregelmatig: leren. <i>Ik woonde in Fortaleza. Ik keek een film.</i>")(r)},
-{id:"voltooid",label:"Voltooid deelwoord",build:r=>buildType(VD,"Voltooid deelwoord","Vul het voltooid deelwoord in.","<b>ge + stam + t/d.</b> 't kofschip → -t, anders -d. Geen ge- bij be-, ver-, ont-: <i>ontdekt, verhuisd</i>. Onregelmatig: <i>gezien, gebleven</i>.")(r)},
-{id:"voegwoorden",label:"Voegwoorden",build:buildVW},
-{id:"zinnen",label:"Zinnen bouwen",build:buildTiles}
+{id:"start",label:"Start",build:buildHome},
+{id:"woorden",label:"Woorden",d:"Flashcards met alle woorden",l:"les 1-3",build:buildFlash},
+{id:"kofschip",label:"'t kofschip",d:"Kies -te of -de, zo snel als je kunt",l:"les 3",nw:1,build:buildKof},
+{id:"werkwoorden",label:"Werkwoorden",d:"Vervoeg: verleden tijd, deelwoord, h/z",l:"les 1-3",build:buildVerbs},
+{id:"hebben-zijn",label:"Hebben of zijn",d:"Kies de goede vorm",l:"les 1",build:buildHZ},
+{id:"verleden-tijd",label:"Verleden tijd",d:"Vul de verleden tijd in",l:"les 2",build:r=>buildType(r,"verleden-tijd",VT,"Verleden tijd","Vul de verleden tijd in. Let op: één werkwoord, geen hebben of zijn!","<b>Verleden tijd = één werkwoord.</b> Regelmatig: stam + te/de ('t kofschip). Onregelmatig: leren. <i>Ik woonde in Fortaleza. Ik keek een film.</i>")},
+{id:"voltooid",label:"Voltooid deelwoord",d:"Vul het voltooid deelwoord in",l:"les 2",build:r=>buildType(r,"voltooid",VD,"Voltooid deelwoord","Vul het voltooid deelwoord in.","<b>ge + stam + t/d.</b> 't kofschip → -t, anders -d. Geen ge- bij be-, ver-, ont-: <i>ontdekt, betaald</i>. Stam op t of d: geen extra letter: <i>gepraat</i>.")},
+{id:"vragen",label:"Vragen",d:"Bouw vragen in de verleden tijd",l:"les 3",nw:1,build:r=>buildTiles(r,"vragen",TILES_VRAAG,"Vragen in de verleden tijd","Klik de stukjes in de goede volgorde.","<b>Ja/nee-vraag:</b> heb/ben + je + … + deelwoord? <i>Heb je de film gezien?</i><br><b>Met vraagwoord:</b> vraagwoord + heb/ben + je + … + deelwoord? <i>Wat heb je gedaan?</i><br>Let op: <b>heb je</b> zonder t!")},
+{id:"voegwoorden",label:"Voegwoorden",d:"Kies het goede voegwoord",l:"les 2",build:buildVW},
+{id:"zou",label:"Zou",d:"Beleefd vragen met zou + infinitief",l:"les 3",nw:1,build:buildZou},
+{id:"zinnen",label:"Zinnen bouwen",d:"Voegwoorden, tijden en toekomst",l:"les 2",build:r=>buildTiles(r,"zinnen",TILES_ZIN,"Zinnen bouwen","Klik de stukjes in de goede volgorde. Klik op een stukje in de zin om het terug te zetten.","Na <b>omdat, als, dat</b> gaat het werkwoord naar het eind. Bij de <b>toekomst</b>: gaan op plek 2, het hele werkwoord aan het eind.")}
 ];
 
 const nav=document.getElementById("nav"),main=document.getElementById("main");
 SECTIONS.forEach(sec=>{
-  const b=el("button",{"data-id":sec.id,on:{click:()=>{location.hash=sec.id}}},sec.label);nav.appendChild(b);
-  const s=el("section",{id:"sec-"+sec.id});main.appendChild(s);sec.el=s;sec.built=false;
+  const b=el("button",{"data-id":sec.id,on:{click:()=>{location.hash=sec.id}}},sec.label+(sec.nw?'<span class="new">nieuw</span>':""));nav.appendChild(b);
+  const s=el("section",{id:"sec-"+sec.id});main.appendChild(s);sec.el=s;
 });
 function show(){
   const id=(location.hash||"").slice(1);const sec=SECTIONS.find(s=>s.id===id)||SECTIONS[0];
   SECTIONS.forEach(s=>{s.el.classList.toggle("on",s===sec);nav.querySelector(`[data-id="${s.id}"]`).classList.toggle("on",s===sec)});
-  if(!sec.built){sec.build(sec.el);sec.built=true}
+  if(sec.id==="start"||!sec.built){sec.el.innerHTML="";sec.build(sec.el);sec.built=true}
+  const b=nav.querySelector(`[data-id="${sec.id}"]`);if(b.scrollIntoView)b.scrollIntoView({block:"nearest",inline:"center"});
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",show);
+function scoreLine(root,id,total){const s=el("div",{class:"row",style:"margin:0 0 10px"});const sp=el("span",{class:"score"},`0 van ${total} goed`);s.appendChild(sp);root.appendChild(s);let n=0;return {hit(){n++;sp.textContent=`${n} van ${total} goed`;saveBest(id,n,total)}}}
 
+/* ---------- home ---------- */
+function buildHome(root){
+  const best=store.get("best")||{};
+  root.innerHTML=`<h2>Hoi Darlene!</h2><p class="intro">Kies een oefening. Je beste score wordt bewaard in deze browser. <i>Pick an exercise; your best score is saved in this browser.</i></p>`;
+  const g=el("div",{class:"grid"});
+  SECTIONS.filter(s=>s.id!=="start").forEach(s=>{
+    const pct=best[s.id]||0;
+    const c=el("button",{class:"tile-card",on:{click:()=>{location.hash=s.id}}},`<div class="lesson">${s.l}${s.nw?" · nieuw":""}</div><div class="t">${s.label}</div><div class="d">${s.d}</div><div class="bar"><i style="width:${pct}%"></i></div><div class="meta" style="margin-top:4px;font-size:12px">${pct?`beste score: ${pct}%`:"nog niet gedaan"}</div>`);
+    g.appendChild(c);
+  });
+  root.appendChild(g);
+}
+
+/* ---------- flashcards ---------- */
 function buildFlash(root){
-  let deck=shuffle(WORDS),i=0,dir="nl",known=0;
+  let les=0,deck,i=0,dir="nl",known=0;
   root.innerHTML=`<h2>Woorden</h2><p class="intro">Klik op de kaart om hem om te draaien. Weet je het? Klik op <b>Ik weet het</b>.</p>
-  <div class="row" style="margin-bottom:8px"><button class="btn alt" id="fdir">Nederlands → Engels</button><button class="btn alt" id="fshuf">Schudden</button><span class="score" id="fscore"></span></div>
+  <div class="row" style="margin-bottom:10px"><div class="seg" id="fles"><button data-l="0" class="on">Alle</button><button data-l="1">Les 1</button><button data-l="2">Les 2</button><button data-l="3">Les 3</button></div><button class="btn alt" id="fdir">NL → EN</button><span class="score" id="fscore"></span></div>
   <div class="flash" id="fcard"><div class="in"><div class="face front"><div class="w" id="ff"></div><div class="s" id="ffs"></div></div><div class="face back"><div class="w" id="fb"></div><div class="s">klik om terug te draaien</div></div></div></div>
   <div class="row"><button class="btn coral" id="fno">Nog niet</button><button class="btn" id="fyes">Ik weet het</button><span class="meta" id="fpos"></span></div>`;
   const card=root.querySelector("#fcard");
+  const reset=()=>{deck=shuffle(WORDS.filter(w=>!les||w[2]===les));i=0;known=0;render()};
   const render=()=>{
-    if(i>=deck.length){card.classList.remove("flip");root.querySelector("#ff").textContent="Klaar!";root.querySelector("#ffs").textContent=`Je wist ${known} van de ${WORDS.length} woorden. Klik op Schudden om opnieuw te beginnen.`;root.querySelector("#fb").textContent="";root.querySelector("#fpos").textContent="";return}
+    if(i>=deck.length){card.classList.remove("flip");root.querySelector("#ff").textContent="Klaar!";root.querySelector("#ffs").textContent=`Je wist ${known} woorden meteen. Kies opnieuw een les om verder te gaan.`;root.querySelector("#fb").textContent="";root.querySelector("#fpos").textContent="";return}
     const [nl,en]=deck[i];card.classList.remove("flip");
     root.querySelector("#ff").textContent=dir==="nl"?nl:en;root.querySelector("#ffs").textContent=dir==="nl"?"Wat betekent dit?":"Hoe zeg je dit in het Nederlands? (met de/het)";
     setTimeout(()=>{root.querySelector("#fb").textContent=dir==="nl"?en:nl},200);
-    root.querySelector("#fpos").textContent=`kaart ${i+1} van ${deck.length}`;root.querySelector("#fscore").textContent=`${known} geweten`;
+    root.querySelector("#fpos").textContent=`nog ${deck.length-i} kaarten`;root.querySelector("#fscore").textContent=`${known} geweten`;
   };
   card.onclick=()=>card.classList.toggle("flip");
-  root.querySelector("#fyes").onclick=()=>{if(i<deck.length){known++;i++;render()}};
+  root.querySelector("#fyes").onclick=()=>{if(i<deck.length){known++;i++;saveBest("woorden",known,WORDS.filter(w=>!les||w[2]===les).length);render()}};
   root.querySelector("#fno").onclick=()=>{if(i<deck.length){deck.push(deck[i]);i++;render()}};
-  root.querySelector("#fshuf").onclick=()=>{deck=shuffle(WORDS);i=0;known=0;render()};
-  root.querySelector("#fdir").onclick=e=>{dir=dir==="nl"?"en":"nl";e.target.textContent=dir==="nl"?"Nederlands → Engels":"Engels → Nederlands";render()};
+  root.querySelectorAll("#fles button").forEach(b=>b.onclick=()=>{les=+b.dataset.l;root.querySelectorAll("#fles button").forEach(x=>x.classList.toggle("on",x===b));reset()});
+  root.querySelector("#fdir").onclick=e=>{dir=dir==="nl"?"en":"nl";e.target.textContent=dir==="nl"?"NL → EN":"EN → NL";render()};
+  reset();
+}
+
+/* ---------- 't kofschip ---------- */
+function buildKof(root){
+  const regs=VERBS.filter(v=>v[6]==="R");
+  let deck=shuffle(regs),i=0,good=0,done=0,streak=0,answered=false;
+  root.innerHTML=`<h2>'t kofschip</h2><p class="intro">Regelmatige werkwoorden: krijgt de verleden tijd <b>-te</b> of <b>-de</b>?</p>
+  <div class="rule">Zoek de stam (werkwoord min -en). Is de laatste letter een van deze? Dan <b>-te</b> en <b>-t</b>. Anders <b>-de</b> en <b>-d</b>.<div class="kof">${["t","k","f","s","ch","p"].map(x=>`<span>${x}</span>`).join("")}</div>Let op: <b>v en z</b> tellen niet: leven → leefde, verhuizen → verhuisde.</div>
+  <div class="box" style="text-align:center"><div class="row" style="justify-content:space-between"><span class="score" id="ks"></span><span class="meta" id="kstreak"></span></div>
+  <div class="huge" id="kv"></div><div class="meta" id="ken"></div>
+  <div class="row" style="justify-content:center;margin:16px 0 6px"><button class="btn" style="min-width:110px;font-size:18px" data-a="te">-te</button><button class="btn coral" style="min-width:110px;font-size:18px" data-a="de">-de</button></div>
+  <div class="fb" id="kfb" style="font-size:16px"></div><button class="btn alt" id="knext" style="margin-top:10px">Volgende</button></div>`;
+  const ending=v=>v[1].endsWith("te")?"te":"de";
+  const render=()=>{if(i>=deck.length){deck=shuffle(regs);i=0}answered=false;const v=deck[i];root.querySelector("#kv").textContent=v[0];root.querySelector("#ken").textContent=v[5];root.querySelector("#kfb").textContent="";root.querySelector("#kfb").className="fb";root.querySelector("#ks").textContent=`${good} van ${done} goed`;root.querySelector("#kstreak").textContent=streak>1?`${streak} op rij!`:""};
+  root.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{if(answered)return;answered=true;done++;const v=deck[i];const ok=b.dataset.a===ending(v);if(ok){good++;streak++}else streak=0;
+    const fb=root.querySelector("#kfb");fb.innerHTML=`${ok?"Goed!":"Niet goed."} ik <b>${v[1]}</b> · wij <b>${v[2]}</b> · ${v[4]==="h"?"heb":"ben"} <b>${v[3]}</b>`;fb.className="fb "+(ok?"ok":"bad");
+    root.querySelector("#ks").textContent=`${good} van ${done} goed`;root.querySelector("#kstreak").textContent=streak>1?`${streak} op rij!`:"";if(done>=10)saveBest("kofschip",good,done)});
+  root.querySelector("#knext").onclick=()=>{i++;render()};
   render();
 }
 
+/* ---------- werkwoorden ---------- */
 function buildVerbs(root){
-  let deck=shuffle(VERBS),i=0,good=0,done=0;
-  root.innerHTML=`<h2>Werkwoorden</h2><p class="intro">Typ de verleden tijd (ik en wij), het voltooid deelwoord, en kies hebben of zijn.</p>
-  <div class="rule"><b>Voorbeeld:</b> werken → ik werkte · wij werkten · gewerkt · hebben</div>
+  let filter="all",deck,i=0,good=0,done=0,checked=false;
+  root.innerHTML=`<h2>Werkwoorden</h2><p class="intro">Typ de verleden tijd (ik en wij), het voltooid deelwoord, en kies hebben of zijn. ${VERBS.length} werkwoorden.</p>
+  <div class="row" style="margin-bottom:12px"><div class="seg" id="vf"><button data-f="all" class="on">Alle</button><button data-f="R">Regelmatig</button><button data-f="S">Sterk</button></div><button class="btn alt" id="vtab">Toon de tabel</button></div>
+  <div id="vtable" style="display:none" class="box"></div>
   <div class="box"><div class="row" style="justify-content:space-between"><div><div class="big" id="vinf"></div><div class="meta" id="ven"></div></div><span class="score" id="vscore"></span></div>
   <div class="vgrid"><div><label>verleden tijd: ik</label><input id="v1" autocomplete="off" autocapitalize="off"></div><div><label>verleden tijd: wij</label><input id="v2" autocomplete="off" autocapitalize="off"></div><div><label>voltooid deelwoord</label><input id="v3" autocomplete="off" autocapitalize="off"></div></div>
   <div class="vgrid"><div><label>hebben of zijn?</label><select id="v4"><option value="">kies…</option><option value="h">hebben</option><option value="z">zijn</option></select></div></div>
   <div class="fb" id="vfb"></div>
   <div class="row" style="margin-top:10px"><button class="btn" id="vcheck">Controleer</button><button class="btn alt" id="vnext">Volgende</button></div></div>`;
   const ids=["v1","v2","v3","v4"].map(x=>root.querySelector("#"+x));
+  const pool=()=>VERBS.filter(v=>filter==="all"||v[6]===filter);
+  const reset=()=>{deck=shuffle(pool());i=0;render()};
   const render=()=>{
-    if(i>=deck.length){deck=shuffle(VERBS);i=0}
-    const v=deck[i];root.querySelector("#vinf").textContent=v[0];root.querySelector("#ven").textContent=v[5];
+    if(i>=deck.length){deck=shuffle(pool());i=0}
+    const v=deck[i];checked=false;root.querySelector("#vinf").textContent=v[0];root.querySelector("#ven").textContent=v[5]+(v[6]==="S"?" · sterk":" · regelmatig");
     ids.forEach(x=>{x.value="";x.classList.remove("ok","bad")});root.querySelector("#vfb").textContent="";root.querySelector("#vfb").className="fb";
-    root.querySelector("#vscore").textContent=`${good} van ${done} goed`;ids[0].focus();
+    root.querySelector("#vscore").textContent=`${good} van ${done} goed`;ids[0].focus({preventScroll:true});
   };
   root.querySelector("#vcheck").onclick=()=>{
     const v=deck[i];const ans=[v[1],v[2],v[3],v[4]];let all=true;
     ids.forEach((x,k)=>{const ok=norm(x.value)===ans[k];x.classList.toggle("ok",ok);x.classList.toggle("bad",!ok);if(!ok)all=false});
     const fb=root.querySelector("#vfb");
-    if(all){fb.textContent="Helemaal goed!";fb.className="fb ok"}else{fb.innerHTML=`Goed is: ik <b>${v[1]}</b> · wij <b>${v[2]}</b> · <b>${v[4]==="h"?"heeft":"is"} ${v[3]}</b>`;fb.className="fb bad"}
-    if(!root.dataset.checked){done++;if(all)good++;root.dataset.checked="1"}
+    if(all){fb.textContent="Helemaal goed!";fb.className="fb ok"}else{fb.innerHTML=`Goed is: ik <b>${v[1]}</b> · wij <b>${v[2]}</b> · <b>${v[4]==="h"?"heb":"ben"} ${v[3]}</b>`;fb.className="fb bad"}
+    if(!checked){done++;if(all)good++;checked=true;if(done>=5)saveBest("werkwoorden",good,done)}
     root.querySelector("#vscore").textContent=`${good} van ${done} goed`;
   };
-  root.querySelector("#vnext").onclick=()=>{delete root.dataset.checked;i++;render()};
+  root.querySelector("#vnext").onclick=()=>{i++;render()};
   ids.forEach(x=>x.addEventListener("keydown",e=>{if(e.key==="Enter")root.querySelector("#vcheck").click()}));
-  render();
+  root.querySelectorAll("#vf button").forEach(b=>b.onclick=()=>{filter=b.dataset.f;root.querySelectorAll("#vf button").forEach(x=>x.classList.toggle("on",x===b));reset()});
+  const tb=root.querySelector("#vtable");
+  root.querySelector("#vtab").onclick=e=>{const open=tb.style.display==="none";tb.style.display=open?"block":"none";e.target.textContent=open?"Verberg de tabel":"Toon de tabel";
+    if(open)tb.innerHTML=`<table class="ref"><tr><th>Werkwoord</th><th>Verleden tijd</th><th>Voltooid deelwoord</th></tr>${VERBS.filter(v=>v[6]==="S").map(v=>`<tr><td><b>${v[0]}</b></td><td>${v[1]} / ${v[2]}</td><td>${v[4]==="h"?"heeft":"is"} ${v[3]}</td></tr>`).join("")}</table>`};
+  reset();
 }
 
-function scoreLine(root,total){const s=el("div",{class:"row",style:"margin:0 0 10px"});const sp=el("span",{class:"score"},`0 van ${total} goed`);s.appendChild(sp);root.appendChild(s);let n=0;return {hit(){n++;sp.textContent=`${n} van ${total} goed`}}}
-
-function buildHZ(root){
-  root.innerHTML=`<h2>Hebben of zijn?</h2><p class="intro">Klik op de goede vorm.</p><div class="rule"><b>Bijna altijd hebben.</b> Zijn bij: zijn (geweest), gaan, komen, blijven, worden, verhuizen.</div>`;
-  const sc=scoreLine(root,HZ.length);const box=el("div",{class:"box"});root.appendChild(box);
-  HZ.forEach(([p,a])=>{
+/* ---------- choice lists ---------- */
+function choiceList(root,id,data,opts){
+  const sc=scoreLine(root,id,data.length);const box=el("div",{class:"box"});root.appendChild(box);
+  data.forEach(([p,a])=>{
     const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p.replace("___","<b>___</b>")));
-    const opts=el("div");let answered=false,first=true;
-    HZOPTS.forEach(o=>{const b=el("button",{class:"choice"},o);b.onclick=()=>{if(answered)return;const ok=o.toLowerCase()===a.toLowerCase();b.classList.add(ok?"ok":"bad");if(ok){answered=true;if(first)sc.hit()}first=false};opts.appendChild(b)});
-    q.appendChild(opts);box.appendChild(q);
+    const o=el("div");let answered=false,first=true;
+    opts.forEach(x=>{const b=el("button",{class:"choice"},x);b.onclick=()=>{if(answered)return;const ok=x.toLowerCase()===a.toLowerCase();b.classList.add(ok?"ok":"bad");if(ok){answered=true;if(first)sc.hit()}first=false};o.appendChild(b)});
+    q.appendChild(o);box.appendChild(q);
   });
 }
+function buildHZ(root){root.innerHTML=`<h2>Hebben of zijn?</h2><p class="intro">Klik op de goede vorm.</p><div class="rule"><b>Bijna altijd hebben.</b> Zijn bij een verandering van plaats of situatie: zijn (geweest), gaan, komen, blijven, worden, beginnen, vertrekken, verhuizen.</div>`;choiceList(root,"hebben-zijn",HZ,HZOPTS)}
+function buildVW(root){root.innerHTML=`<h2>Voegwoorden</h2><p class="intro">Kies het goede voegwoord. Kijk goed waar het werkwoord staat!</p>
+  <div class="rule"><span class="tag">nevenschikkend</span> en, maar, of, want, dus: <b>niets verandert</b>. <i>Ik kom niet, want ik ben ziek.</i><br><span class="tag c">onderschikkend</span> omdat, als, dat, wanneer, toen: <b>werkwoord naar het eind</b>. <i>Ik kom niet, omdat ik ziek ben.</i></div>`;choiceList(root,"voegwoorden",VW,VWOPTS)}
 
-function buildType(data,title,intro,rule){
-  return (root=>{
-    root.innerHTML=`<h2>${title}</h2><p class="intro">${intro}</p><div class="rule">${rule}</div>`;
-    const sc=scoreLine(root,data.length);const box=el("div",{class:"box"});root.appendChild(box);
-    data.forEach(([p,a])=>{
-      const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p.replace("___","<b>___</b>")));
-      const row=el("div",{class:"row"});const inp=el("input",{type:"text",autocomplete:"off",autocapitalize:"off"});const b=el("button",{class:"btn alt"},"Check");const fb=el("div",{class:"fb"});
-      let scored=false,tries=0;
-      const check=()=>{const ok=norm(inp.value)===norm(a);inp.classList.toggle("ok",ok);inp.classList.toggle("bad",!ok);tries++;
-        if(ok){fb.textContent="Goed!";fb.className="fb ok";if(!scored&&tries===1){sc.hit()}scored=true}
-        else{fb.innerHTML=tries>=2?`Goed is: <b>${a}</b>`:"Nog niet goed. Probeer het nog een keer.";fb.className="fb bad"}};
-      b.onclick=check;inp.addEventListener("keydown",e=>{if(e.key==="Enter")check()});
-      row.appendChild(inp);row.appendChild(b);q.appendChild(row);q.appendChild(fb);box.appendChild(q);
-    });
-  });
-}
-
-function buildVW(root){
-  root.innerHTML=`<h2>Voegwoorden</h2><p class="intro">Kies het goede voegwoord. Kijk goed waar het werkwoord staat!</p>
-  <div class="rule"><span class="tag">nevenschikkend</span> en, maar, of, want, dus: <b>niets verandert</b>. <i>Ik kom niet, want ik ben ziek.</i><br><span class="tag c">onderschikkend</span> omdat, als, dat, wanneer, toen: <b>werkwoord naar het eind</b>. <i>Ik kom niet, omdat ik ziek ben.</i></div>`;
-  const sc=scoreLine(root,VW.length);const box=el("div",{class:"box"});root.appendChild(box);
-  VW.forEach(([p,a])=>{
+/* ---------- typing ---------- */
+function buildType(root,id,data,title,intro,rule){
+  root.innerHTML=`<h2>${title}</h2><p class="intro">${intro}</p><div class="rule">${rule}</div>`;
+  const sc=scoreLine(root,id,data.length);const box=el("div",{class:"box"});root.appendChild(box);
+  data.forEach(([p,a])=>{
     const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p.replace("___","<b>___</b>")));
-    const opts=el("div");let answered=false,first=true;
-    VWOPTS.forEach(o=>{const b=el("button",{class:"choice"},o);b.onclick=()=>{if(answered)return;const ok=o.toLowerCase()===a.toLowerCase();b.classList.add(ok?"ok":"bad");if(ok){answered=true;if(first)sc.hit()}first=false};opts.appendChild(b)});
-    q.appendChild(opts);box.appendChild(q);
+    const row=el("div",{class:"row"});const inp=el("input",{type:"text",autocomplete:"off",autocapitalize:"off"});const b=el("button",{class:"btn alt"},"Check");const fb=el("div",{class:"fb"});
+    let scored=false,tries=0;
+    const check=()=>{const ok=norm(inp.value)===norm(a);inp.classList.toggle("ok",ok);inp.classList.toggle("bad",!ok);tries++;
+      if(ok){fb.textContent="Goed!";fb.className="fb ok";if(!scored&&tries===1)sc.hit();scored=true}
+      else{fb.innerHTML=tries>=2?`Goed is: <b>${a}</b>`:"Nog niet goed. Probeer het nog een keer.";fb.className="fb bad"}};
+    b.onclick=check;inp.addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+    row.appendChild(inp);row.appendChild(b);q.appendChild(row);q.appendChild(fb);box.appendChild(q);
   });
 }
 
-function buildTiles(root){
-  let order=shuffle(TILES.map((_,k)=>k)),i=0,good=0;
-  root.innerHTML=`<h2>Zinnen bouwen</h2><p class="intro">Klik de stukjes in de goede volgorde. Klik op een stukje in de zin om het terug te zetten.</p>
-  <div class="box"><div class="row" style="justify-content:space-between"><span class="tag" id="ttag"></span><span class="score" id="tscore"></span></div>
-  <div class="slot" id="tslot"></div><div class="pool" id="tpool"></div><div class="fb" id="tfb"></div>
-  <div class="row" style="margin-top:10px"><button class="btn" id="tcheck">Controleer</button><button class="btn alt" id="tnext">Volgende zin</button></div></div>
-  <div class="rule">Tip: na <b>omdat, als, dat</b> gaat het werkwoord naar het eind. Bij de <b>toekomst</b>: gaan op plek 2, het hele werkwoord aan het eind.</div>`;
-  const slot=root.querySelector("#tslot"),pool=root.querySelector("#tpool"),fb=root.querySelector("#tfb");let checked=false;
+/* ---------- zou ---------- */
+function buildZou(root){
+  root.innerHTML=`<h2>Zou + infinitief</h2><p class="intro">Met zou vraag je iets extra beleefd. Perfect voor een formele mail. <i>zou = would</i></p>
+  <div class="rule"><b>ik / jij / u / hij / zij zou · wij / jullie / zij zouden</b><br>Zou op plek 2 (of 1 in een vraag), de infinitief aan het eind. Twee infinitieven? Eerst kunnen/willen/mogen: <i>Ik zou graag een afspraak <b>willen maken</b>. Zou u mij <b>kunnen helpen</b>?</i><br>Portugees: <i>Eu gostaria de…</i> = Ik zou graag … willen · <i>O senhor poderia…?</i> = Zou u … kunnen?</div>
+  <h3>Deel 1 · Welke zin is goed?</h3>`;
+  const sc=scoreLine(root,"zou",ZOUMC.length);const box=el("div",{class:"box"});root.appendChild(box);
+  ZOUMC.forEach(it=>{
+    const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},`<b>${it.p}</b>`));
+    const o=el("div");let answered=false,first=true;
+    shuffle(it.o.map((t,k)=>[t,k])).forEach(([t,k])=>{const b=el("button",{class:"choice"},t);b.onclick=()=>{if(answered)return;const ok=k===it.a;b.classList.add(ok?"ok":"bad");if(ok){answered=true;if(first)sc.hit()}first=false};o.appendChild(b)});
+    q.appendChild(o);box.appendChild(q);
+  });
+  root.appendChild(el("h3",{},"Deel 2 · Bouw de zin"));
+  const sub=el("div");root.appendChild(sub);
+  buildTiles(sub,"zou-zinnen",TILES_ZOU,null,null,null);
+}
+
+/* ---------- tiles ---------- */
+function buildTiles(root,id,data,title,intro,rule){
+  let order=shuffle(data.map((_,k)=>k)),i=0,good=0,checked=false;
+  root.innerHTML=(title?`<h2>${title}</h2><p class="intro">${intro}</p>${rule?`<div class="rule">${rule}</div>`:""}`:"")+`
+  <div class="box"><div class="row" style="justify-content:space-between"><span class="tag" data-r="tag"></span><span class="score" data-r="score"></span></div>
+  <div class="slot" data-r="slot"></div><div class="pool" data-r="pool"></div><div class="fb" data-r="fb"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" data-r="check">Controleer</button><button class="btn alt" data-r="next">Volgende zin</button></div></div>`;
+  const $=k=>root.querySelector(`[data-r="${k}"]`);
+  const slot=$("slot"),pool=$("pool"),fb=$("fb");
   const render=()=>{
     if(i>=order.length){order=shuffle(order);i=0}
-    const it=TILES[order[i]];checked=false;slot.innerHTML="";pool.innerHTML="";fb.textContent="";fb.className="fb";
-    root.querySelector("#ttag").textContent=it.t;root.querySelector("#tscore").textContent=`${good} zinnen goed`;
-    let words=shuffle(it.w);while(words.join(" ")===it.w.join(" ")&&it.w.length>2)words=shuffle(it.w);
+    const it=data[order[i]];checked=false;slot.innerHTML="";pool.innerHTML="";fb.textContent="";fb.className="fb";
+    $("tag").textContent=it.t;$("score").textContent=`${good} van ${data.length} goed`;
+    let words=shuffle(it.w);let tries=0;while(words.join(" ")===it.w.join(" ")&&tries++<10)words=shuffle(it.w);
     words.forEach(w=>{const b=el("button",{class:"tile"},w);b.onclick=()=>{(b.parentNode===pool?slot:pool).appendChild(b)};pool.appendChild(b)});
   };
-  root.querySelector("#tcheck").onclick=()=>{
-    const it=TILES[order[i]];const built=[...slot.children].map(b=>b.textContent).join(" ");
-    const ok=[it.s,...(it.alt||[])].some(s=>norm(s)===norm(built));
+  $("check").onclick=()=>{
+    const it=data[order[i]];
     if(pool.children.length){fb.textContent="Gebruik alle stukjes.";fb.className="fb bad";return}
-    if(ok){fb.textContent="Goed! "+it.s;fb.className="fb ok";if(!checked){good++;root.querySelector("#tscore").textContent=`${good} zinnen goed`}}
+    const built=[...slot.children].map(b=>b.textContent).join(" ");
+    const ok=[it.s,...(it.alt||[])].some(s=>norm(s)===norm(built));
+    if(ok){fb.textContent="Goed! "+it.s;fb.className="fb ok";if(!checked){good++;saveBest(id.startsWith("zou")?"zou":id,good,data.length)}}
     else{fb.innerHTML="Nog niet goed. Goed is: <b>"+it.s+"</b>";fb.className="fb bad"}
-    checked=true;
+    checked=true;$("score").textContent=`${good} van ${data.length} goed`;
   };
-  root.querySelector("#tnext").onclick=()=>{i++;render()};
+  $("next").onclick=()=>{i++;render()};
   render();
 }
 show();
