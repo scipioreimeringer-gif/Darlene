@@ -88,7 +88,7 @@ table.ref tr:nth-child(even) td{background:var(--tint)}
 <body>
 <header>
   <h1>Darlene oefent Nederlands</h1>
-  <p>Alles uit les 1, 2 en 3 · bijgewerkt op 12 november</p>
+  <p>Alles uit les 1 tot en met 4 · bijgewerkt op 13 november</p>
 </header>
 <nav id="nav"></nav>
 <main id="main"></main>
@@ -175,11 +175,16 @@ function saveBest(id,n,total){const b=store.get("best")||{};const pct=Math.round
 const SECTIONS=[
 {id:"start",label:"Start",build:buildHome},
 {id:"woorden",label:"Woorden",d:"Flashcards met alle woorden",l:"les 1-3",build:buildFlash},
-{id:"tijdrace",label:"Tijdrace",d:"60 seconden: tik de goede vorm",l:"vervoegen",nw:1,build:buildRace},
-{id:"memory",label:"Memory",d:"Zoek het werkwoord en zijn deelwoord",l:"vervoegen",nw:1,build:buildMemory},
-{id:"sorteren",label:"Sorteren",d:"Hebben of zijn? Regelmatig of sterk?",l:"vervoegen",nw:1,build:buildSort},
-{id:"goed-fout",label:"Goed of fout",d:"Is de zin goed? Tik en leer",l:"alles",nw:1,build:buildGF},
-{id:"nu",label:"Tegenwoordige tijd",d:"Kies de goede vorm: ik werk, jij werkt",l:"herhaling",nw:1,build:buildNu},
+{id:"regels",label:"Regelkaarten",d:"Flashcards met ezelsbruggetjes en vormen",l:"13 november",nw:1,build:buildRegels},
+{id:"stam",label:"Stam maken",d:"V → F, Z → S, dubbele klank",l:"13 november",nw:1,build:r=>buildMC(r,"stam","Stam maken","Kies de goede stam. Let op V en Z, en op de dubbele klank. <i>Choose the correct stem.</i>","<b>Stam = infinitief min -en.</b> V → F en Z → S aan het eind. Lange klank + één medeklinker: de klank wordt dubbel (lezen → lees). Korte klank: één medeklinker in de stam (zitten → zit).",STAM.map(([i,s,w,n])=>[`<span class="big" style="font-size:26px">${i}</span>`,s,w,n]))},
+{id:"omzetten",label:"Zin omzetten",d:"Verleden tijd of voltooide tijd van een zin",l:"13 november",nw:1,build:buildOmzetten},
+{id:"patronen",label:"Patronen",d:"ij-ee-e, i-o-o, e-a-e en meer",l:"13 november",nw:1,build:buildPatronen},
+{id:"beleefd",label:"Beleefd maken",d:"Zet de zin om naar een beleefde vraag",l:"13 november",nw:1,build:r=>buildMC(r,"beleefd","Beleefd maken","Kies de beleefde zin met zou en u. <i>Choose the polite version.</i>","<b>Zou u mij … kunnen …?</b> Het hele werkwoord staat aan het eind. Na een vraagwoord gaat het werkwoord ook naar het eind: <i>Zou u mij kunnen zeggen hoe laat de intake begint?</i>",BELEEFD)},
+{id:"tijdrace",label:"Tijdrace",d:"60 seconden: tik de goede vorm",l:"vervoegen",build:buildRace},
+{id:"memory",label:"Memory",d:"Zoek het werkwoord en zijn deelwoord",l:"vervoegen",build:buildMemory},
+{id:"sorteren",label:"Sorteren",d:"Hebben of zijn? Regelmatig of sterk?",l:"vervoegen",build:buildSort},
+{id:"goed-fout",label:"Goed of fout",d:"Is de zin goed? Tik en leer",l:"alles",build:buildGF},
+{id:"nu",label:"Tegenwoordige tijd",d:"Kies de goede vorm: ik werk, jij werkt",l:"herhaling",build:buildNu},
 {id:"kofschip",label:"'t kofschip",d:"Kies -te of -de, zo snel als je kunt",l:"les 3",build:buildKof},
 {id:"werkwoorden",label:"Werkwoorden",d:"Vervoeg: verleden tijd, deelwoord, h/z",l:"les 1-3",build:buildVerbs},
 {id:"hebben-zijn",label:"Hebben of zijn",d:"Kies de goede vorm",l:"les 1",build:buildHZ},
@@ -219,6 +224,155 @@ function wrongForms(v,kind){
   c=shuffle(c).slice(0,2);
   while(c.length<2){const o=VERBS[Math.floor(Math.random()*VERBS.length)];const f={vt:o[1],vtm:o[2],vd:o[3]}[kind];if(f!==correct&&!c.includes(f))c.push(f)}
   return {correct,opts:shuffle([correct,...c])};
+}
+
+/* ---------- 13 november: spelling, patronen, omzetten ---------- */
+VERBS.push(["wijzen","wees","wezen","gewezen","h","to point","S"],["wrijven","wreef","wreven","gewreven","h","to rub","S"],["bieden","bood","boden","geboden","h","to offer","S"],["schieten","schoot","schoten","geschoten","h","to shoot","S"],["ruiken","rook","roken","geroken","h","to smell","S"],["binden","bond","bonden","gebonden","h","to bind, to tie","S"],["vergeten","vergat","vergaten","vergeten","h","to forget","S"]);
+
+const REGELS=[
+["Hoe maak je de stam?","Infinitief min -en: werken → werk. De ik-vorm is de stam."],
+["Wat gebeurt er met V en Z aan het eind van de stam?","V → F en Z → S: leven → leef, reizen → reis, schrijven → schrijf."],
+["Lezen: wat is de stam?","lez → les → lees. Z wordt S en de klank wordt dubbel."],
+["Dubbele klank of dubbele medeklinker?","Lang geluid: één medeklinker erachter (maan → manen). Kort geluid: twee medeklinkers (man → mannen)."],
+["Wat is 't kofschip?","T K F S CH P. Stam op een van deze letters? Dan -te(n) in de verleden tijd en -t in het deelwoord. Anders -de(n) en -d."],
+["Leven: -te of -de? Waarom?","-de: leefde. Kijk naar de infinitief: de V staat niet in 't kofschip. Deelwoord: geleefd."],
+["Wachten en praten: verleden tijd en deelwoord?","wachtte(n), gewacht · praatte(n), gepraat. Stam op t: -te(n), maar geen extra t in het deelwoord."],
+["Waarom jij wordt en hij vindt, met t?","Stam op d + t. Stam op t krijgt geen extra t: jij wacht, hij praat."],
+["Werk jij of werkt jij?","Werk jij? Bij een vraag met jij valt de t weg."],
+["Bij welke beginstukjes krijg je geen ge-?","be-, ge-, her-, ont-, ver-, er-. Bevers Geven Heel Ontzettend Veel Eieren. betaald, ontdekt, verteld."],
+["Waar staat ge- bij een scheidbaar werkwoord?","In het midden: afgezegd, meegedaan, ingevuld, schoongemaakt."],
+["Hebben of zijn?","Verandering van plaats of toestand: zijn (gaan, komen, blijven, worden, vertrekken, verhuizen). Anders hebben."],
+["Meervoud: ik bleef, wij …?","bleven. F → V en S → Z komen terug: wreef/wreven, wees/wezen, las/lazen."],
+["Patroon met ij?","ij – ee – e: schrijven, schreef, geschreven. Ook kijken, rijden, blijven, wijzen, wrijven."],
+["Patroon met i?","i – o – o: drinken, dronk, gedronken. Ook zingen, klimmen, vinden, beginnen, winnen."],
+["Patroon met e?","e – a – e: lezen, las, gelezen. Ook geven, eten, vergeten, zitten."],
+["Patroon met ie en ui?","ie – oo – o: kiezen, koos, gekozen. ui – oo – o: sluiten, sloot, gesloten."],
+["Hoe maak je een zin beleefd?","Zou u mij … kunnen …? Het hele werkwoord staat aan het eind."],
+["Beleefde vraag met een vraagwoord?","Het werkwoord gaat naar het eind: Zou u mij kunnen zeggen hoe laat de intake begint?"]
+];
+const PATS=["ij – ee – e","i – o – o","e – a – e","ie – oo – o","ui – oo – o"];
+const PAT=[
+["schrijven","schreef","schreven","geschreven",0],["kijken","keek","keken","gekeken",0],["rijden","reed","reden","gereden",0],["blijven","bleef","bleven","gebleven",0],["wijzen","wees","wezen","gewezen",0],["wrijven","wreef","wreven","gewreven",0],
+["drinken","dronk","dronken","gedronken",1],["zingen","zong","zongen","gezongen",1],["klimmen","klom","klommen","geklommen",1],["vinden","vond","vonden","gevonden",1],["beginnen","begon","begonnen","begonnen",1],["winnen","won","wonnen","gewonnen",1],["springen","sprong","sprongen","gesprongen",1],["binden","bond","bonden","gebonden",1],
+["lezen","las","lazen","gelezen",2],["geven","gaf","gaven","gegeven",2],["eten","at","aten","gegeten",2],["vergeten","vergat","vergaten","vergeten",2],["zitten","zat","zaten","gezeten",2],
+["kiezen","koos","kozen","gekozen",3],["vliegen","vloog","vlogen","gevlogen",3],["bieden","bood","boden","geboden",3],["schieten","schoot","schoten","geschoten",3],
+["sluiten","sloot","sloten","gesloten",4],["kruipen","kroop","kropen","gekropen",4],["ruiken","rook","roken","geroken",4]
+];
+const STAM=[
+["lezen","lees",["lez","les"],"Z → S en de klank wordt dubbel: lez → les → lees."],["koken","kook",["kok","kookt"],"Lange klank, één medeklinker erna: de klank wordt dubbel."],
+["schrijven","schrijf",["schrijv","schrijff"],"V → F aan het eind."],["reizen","reis",["reiz","reiss"],"Z → S aan het eind."],["leven","leef",["lev","leev"],"V → F, en de klank is lang: leef."],
+["praten","praat",["prat","praatt"],"Lange klank: de klank wordt dubbel, één t."],["wachten","wacht",["wach","wachtt"],"De stam eindigt op cht: wacht."],["blijven","blijf",["blijv","blijff"],"V → F."],
+["maken","maak",["mak","maakk"],"Lange klank: maak."],["wonen","woon",["won","woonn"],"Lange klank: woon."],["zitten","zit",["zitt","ziet"],"Korte klank: zitten heeft dubbel tt, maar de stam heeft één t."],
+["kennen","ken",["kenn","keen"],"Korte klank: kennen → ken."],["geven","geef",["gev","geev"],"V → F en de klank is lang: geef."],["werken","werk",["werkk","werke"],"Stam: infinitief min -en."],
+["vinden","vind",["vinnd","vint"],"De d blijft staan: vind."],["worden","word",["wort","worrd"],"De d blijft staan: word."],["antwoorden","antwoord",["antwoort","antwoorrd"],"De d blijft staan: antwoord."],
+["verhuizen","verhuis",["verhuiz","verhuiss"],"Z → S."],["lopen","loop",["lop","loopp"],"Lange klank: loop."],["slapen","slaap",["slap","slaapp"],"Lange klank: slaap."],
+["eten","eet",["et","eett"],"Lange klank: eet."],["kopen","koop",["kop","koopp"],"Lange klank: koop."],["spelen","speel",["spel","speell"],"Lange klank: speel."]
+];
+const OMZ=[
+["Ik lees op uw website over de taalcursus.",["Ik las op uw website over de taalcursus.","Ik lezde op uw website over de taalcursus.","Ik heb op uw website over de taalcursus gelezen."],["Ik heb op uw website over de taalcursus gelezen.","Ik ben op uw website over de taalcursus gelezen.","Ik heb op uw website over de taalcursus gelest."]],
+["Ik schrijf een mail aan de VU.",["Ik schreef een mail aan de VU.","Ik schrijfde een mail aan de VU.","Ik heb een mail aan de VU geschreven."],["Ik heb een mail aan de VU geschreven.","Ik heb een mail aan de VU geschrijft.","Ik ben een mail aan de VU geschreven."]],
+["Ik wacht op uw antwoord.",["Ik wachtte op uw antwoord.","Ik wachte op uw antwoord.","Ik wachtde op uw antwoord."],["Ik heb op uw antwoord gewacht.","Ik heb op uw antwoord gewachtt.","Ik heb op uw antwoord gewachd."]],
+["Wij kijken een film.",["Wij keken een film.","Wij kijkten een film.","Wij hebben een film gekeken."],["Wij hebben een film gekeken.","Wij zijn een film gekeken.","Wij hebben een film gekijkt."]],
+["Ik maak mijn huis schoon.",["Ik maakte mijn huis schoon.","Ik maakde mijn huis schoon.","Ik maakte mijn huis geschoon."],["Ik heb mijn huis schoongemaakt.","Ik heb mijn huis geschoonmaakt.","Ik heb mijn huis schoongemaak."]],
+["Zij zingt een liedje.",["Zij zong een liedje.","Zij zingde een liedje.","Zij heeft een liedje gezongen."],["Zij heeft een liedje gezongen.","Zij heeft een liedje gezingd.","Zij is een liedje gezongen."]],
+["Ik praat met mijn zus.",["Ik praatte met mijn zus.","Ik praate met mijn zus.","Ik praatde met mijn zus."],["Ik heb met mijn zus gepraat.","Ik heb met mijn zus gepraatt.","Ik heb met mijn zus gepraad."]],
+["Wij wonen in Fortaleza.",["Wij woonden in Fortaleza.","Wij woonten in Fortaleza.","Wij hebben in Fortaleza gewoond."],["Wij hebben in Fortaleza gewoond.","Wij zijn in Fortaleza gewoond.","Wij hebben in Fortaleza gewoont."]],
+["Hij werkt de hele dag.",["Hij werkte de hele dag.","Hij werkde de hele dag.","Hij heeft de hele dag gewerkt."],["Hij heeft de hele dag gewerkt.","Hij heeft de hele dag gewerkd.","Hij is de hele dag gewerkt."]],
+["Ik drink koffie.",["Ik dronk koffie.","Ik drinkte koffie.","Ik heb koffie gedronken."],["Ik heb koffie gedronken.","Ik heb koffie gedrinkt.","Ik ben koffie gedronken."]],
+["Zij blijft thuis.",["Zij bleef thuis.","Zij blijfde thuis.","Zij is thuis gebleven."],["Zij is thuis gebleven.","Zij heeft thuis gebleven.","Zij is thuis gebleef."]],
+["Wij leven op een boerderij.",["Wij leefden op een boerderij.","Wij levden op een boerderij.","Wij leeften op een boerderij."],["Wij hebben op een boerderij geleefd.","Wij hebben op een boerderij geleeft.","Wij hebben op een boerderij gelefd."]],
+["Ik antwoord op de mail.",["Ik antwoordde op de mail.","Ik antwoorde op de mail.","Ik antwoordte op de mail."],["Ik heb op de mail geantwoord.","Ik heb op de mail geantwoordt.","Ik heb op de mail antwoord."]],
+["Hij gaat naar de markt.",["Hij ging naar de markt.","Hij gaade naar de markt.","Hij is naar de markt gegaan."],["Hij is naar de markt gegaan.","Hij heeft naar de markt gegaan.","Hij is naar de markt gegaand."]]
+];
+const BELEEFD=[
+["Stuur me informatie.","Zou u mij informatie kunnen sturen?",["Zou u kunnen mij informatie sturen?","Kunt u mij informatie stuurt?"],"Zou u mij … kunnen + het hele werkwoord aan het eind."],
+["Ik wil een afspraak.","Ik zou graag een afspraak willen maken.",["Ik zou willen graag een afspraak maken.","Ik wil graag een afspraak willen."],"Zou graag … willen + infinitief."],
+["Geef me het formulier.","Zou u mij het formulier kunnen geven?",["Zou u mij het formulier geven kunnen?","Zou je mij het formulier kunnen geven?"],"Formeel is u, niet je. En kunnen komt voor geven."],
+["Wat kost de cursus?","Zou u mij kunnen vertellen wat de cursus kost?",["Zou u mij kunnen vertellen wat kost de cursus?","Zou u mij vertellen kunnen wat de cursus kost?"],"Na wat gaat het werkwoord naar het eind: wat de cursus kost."],
+["Hoe laat begint de intake?","Zou u mij kunnen zeggen hoe laat de intake begint?",["Zou u mij kunnen zeggen hoe laat begint de intake?","Zou je mij kunnen zeggen hoe laat de intake begint?"],"Na hoe laat gaat het werkwoord naar het eind."],
+["Kom je donderdag?","Zou u donderdag kunnen komen?",["Zou u kunnen donderdag komen?","Zou je donderdag kunnen komen?"],"Zou u + tijd + kunnen + infinitief."],
+["Help me even.","Zou u mij even kunnen helpen?",["Zou u mij even helpen kunnen?","Zou u mij even kunt helpen?"],"Na zou u … kunnen blijft de infinitief: helpen."],
+["Ik wil meer weten over de intake.","Ik zou graag meer willen weten over de intake.",["Ik zou graag meer weten willen over de intake.","Ik zou graag meer wil weten over de intake."],"Zou graag … willen weten."]
+];
+
+function mcList(box,sc,items){
+  items.forEach(([p,ok,wr,note])=>{
+    const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p));
+    const row=el("div");const fb=el("div",{class:"fb"});let done=false;
+    shuffle([ok,...wr]).forEach(o=>{
+      const b=el("button",{class:"choice"},o);
+      b.onclick=()=>{if(done)return;done=true;
+        row.querySelectorAll("button").forEach(x=>{if(x.textContent===ok)x.classList.add("ok");x.disabled=true});
+        if(o===ok){fb.textContent="Goed!"+(note?" "+note:"");fb.className="fb ok";sc.hit()}
+        else{b.classList.add("bad");fb.innerHTML=`Goed is: <b>${ok}</b>.`+(note?" "+note:"");fb.className="fb bad"}};
+      row.appendChild(b)});
+    q.appendChild(row);q.appendChild(fb);box.appendChild(q)});
+}
+function typedList(box,sc,data){
+  data.forEach(([p,a])=>{
+    const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p));
+    const row=el("div",{class:"row"});const inp=el("input",{type:"text",autocomplete:"off",autocapitalize:"off",style:"max-width:100%"});const b=el("button",{class:"btn alt"},"Check");const fb=el("div",{class:"fb"});
+    let scored=false,tries=0;
+    const check=()=>{const ok=norm(inp.value)===norm(a);inp.classList.toggle("ok",ok);inp.classList.toggle("bad",!ok);tries++;
+      if(ok){fb.textContent="Goed!";fb.className="fb ok";if(!scored&&tries===1)sc.hit();scored=true}
+      else{fb.innerHTML=tries>=2?`Goed is: <b>${a}</b>`:"Nog niet goed. Probeer het nog een keer.";fb.className="fb bad"}};
+    b.onclick=check;inp.addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+    row.appendChild(inp);row.appendChild(b);q.appendChild(row);q.appendChild(fb);box.appendChild(q)});
+}
+function buildMC(root,id,title,intro,rule,items){
+  root.innerHTML=`<h2>${title}</h2><p class="intro">${intro}</p><div class="rule">${rule}</div>`;
+  const sc=scoreLine(root,id,items.length);const box=el("div",{class:"box"});root.appendChild(box);
+  mcList(box,sc,shuffle(items));
+  const again=el("button",{class:"btn alt",style:"margin-top:6px"},"Nieuwe ronde");again.onclick=()=>buildMC(root,id,title,intro,rule,items);root.appendChild(again);
+}
+function buildOmzetten(root){
+  let tense="vt",mode="kies";
+  root.innerHTML=`<h2>Zin omzetten</h2><p class="intro">Je ziet een zin in de tegenwoordige tijd. Zet hem in de verleden tijd of in de voltooide tijd. <i>Change the sentence to the past tense.</i></p>
+  <div class="row" style="margin-bottom:8px"><div class="seg" data-g="t"><button data-v="vt" class="on">Verleden tijd</button><button data-v="vd">Voltooide tijd</button></div><div class="seg" data-g="m"><button data-v="kies" class="on">Kiezen</button><button data-v="typ">Typen</button></div></div>
+  <div class="rule"><b>Verleden tijd:</b> één werkwoord (Ik las, Wij keken). <b>Voltooide tijd:</b> hebben of zijn + voltooid deelwoord aan het eind (Ik heb gelezen).</div><div data-w="w"></div>`;
+  const w=root.querySelector('[data-w="w"]');
+  const render=()=>{
+    w.innerHTML="";const idx=tense==="vt"?1:2;
+    const label=tense==="vt"?"Zet in de verleden tijd":"Zet in de voltooide tijd";
+    const sc=scoreLine(w,"omzetten",OMZ.length);const box=el("div",{class:"box"});w.appendChild(box);
+    const data=shuffle(OMZ.slice());
+    if(mode==="kies")mcList(box,sc,data.map(r=>[`<span class="tag c">${label.replace("Zet in de ","")}</span>${r[0]}`,r[idx][0],r[idx].slice(1)]));
+    else typedList(box,sc,data.map(r=>[`<span class="tag c">${label.replace("Zet in de ","")}</span>${r[0]}`,r[idx][0]]));
+  };
+  root.querySelectorAll('[data-g="t"] button').forEach(b=>b.onclick=()=>{tense=b.dataset.v;root.querySelectorAll('[data-g="t"] button').forEach(x=>x.classList.toggle("on",x===b));render()});
+  root.querySelectorAll('[data-g="m"] button').forEach(b=>b.onclick=()=>{mode=b.dataset.v;root.querySelectorAll('[data-g="m"] button').forEach(x=>x.classList.toggle("on",x===b));render()});
+  render();
+}
+function buildRegels(root){
+  let deck="regels",filt="alle",cards,i=0,known=0,front="";
+  root.innerHTML=`<h2>Regelkaarten</h2><p class="intro">Flashcards met de ezelsbruggetjes en met de werkwoordsvormen. Klik op de kaart om hem om te draaien. <i>Tap the card to flip it.</i></p>
+  <div class="row" style="margin-bottom:10px"><div class="seg" data-g="d"><button data-v="regels" class="on">Regels</button><button data-v="verb">Werkwoorden</button></div><div class="seg" data-g="f" style="display:none"><button data-v="alle" class="on">Alle</button><button data-v="S">Sterk</button><button data-v="R">Regelmatig</button></div><span class="score" data-r="sc">0 geweten</span></div>
+  <div class="flash" data-r="card"><div class="in"><div class="face front"><div class="w" data-r="ff" style="font-size:24px"></div><div class="s" data-r="fs"></div></div><div class="face back"><div class="w" data-r="fb" style="font-size:20px;line-height:1.35"></div><div class="s">klik om terug te draaien</div></div></div></div>
+  <div class="row"><button class="btn coral" data-r="no">Nog niet</button><button class="btn" data-r="yes">Ik weet het</button><span class="meta" data-r="pos"></span></div>`;
+  const $=k=>root.querySelector(`[data-r="${k}"]`);const card=$("card");
+  const build=()=>{
+    if(deck==="regels")cards=shuffle(REGELS.map(r=>[r[0],r[1],""]));
+    else cards=shuffle(VERBS.filter(v=>filt==="alle"||v[6]===filt).map(v=>[v[0],`ik ${v[1]}<br>wij ${v[2]}<br>${v[4]==="z"?"is":"heeft"} ${v[3]}`,v[5]]));
+    i=0;known=0;render();
+  };
+  const render=()=>{
+    card.classList.remove("flip");
+    if(i>=cards.length){$("ff").textContent="Klaar!";$("fs").textContent=`Je wist ${known} kaarten meteen.`;$("fb").textContent="";$("pos").textContent="";$("sc").textContent=`${known} geweten`;return}
+    const c=cards[i];$("ff").textContent=c[0];$("fs").textContent=c[2];
+    setTimeout(()=>{$("fb").innerHTML=c[1]},200);
+    $("pos").textContent=`nog ${cards.length-i} kaarten`;$("sc").textContent=`${known} geweten`;
+  };
+  card.onclick=()=>card.classList.toggle("flip");
+  $("yes").onclick=()=>{if(i<cards.length){known++;i++;if(deck==="regels")saveBest("regels",known,REGELS.length);render()}};
+  $("no").onclick=()=>{if(i<cards.length){cards.push(cards[i]);i++;render()}};
+  root.querySelectorAll('[data-g="d"] button').forEach(b=>b.onclick=()=>{deck=b.dataset.v;root.querySelectorAll('[data-g="d"] button').forEach(x=>x.classList.toggle("on",x===b));root.querySelector('[data-g="f"]').style.display=deck==="verb"?"inline-flex":"none";build()});
+  root.querySelectorAll('[data-g="f"] button').forEach(b=>b.onclick=()=>{filt=b.dataset.v;root.querySelectorAll('[data-g="f"] button').forEach(x=>x.classList.toggle("on",x===b));build()});
+  build();
+}
+function buildPatronen(root){
+  const items=PAT.map(p=>[`<span class="big" style="font-size:26px">${p[0]}</span>`,PATS[p[4]],PATS.filter((_,k)=>k!==p[4]),`${p[0]} – ${p[1]} – ${p[2]} – ${p[3]}`]);
+  buildMC(root,"patronen","Patronen","Welk klankpatroon hoort bij dit werkwoord? Na je antwoord zie je alle vormen. <i>Which sound pattern does this verb follow?</i>",
+  "<b>ij – ee – e</b> schrijven, schreef, geschreven · <b>i – o – o</b> drinken, dronk, gedronken · <b>e – a – e</b> lezen, las, gelezen · <b>ie – oo – o</b> kiezen, koos, gekozen · <b>ui – oo – o</b> sluiten, sloot, gesloten",items);
 }
 
 /* ---------- tijdrace ---------- */
@@ -342,7 +496,7 @@ function buildNu(root){
 function buildHome(root){
   const best=store.get("best")||{};
   root.innerHTML=`<h2>Hoi Darlene!</h2><p class="intro">Kies een oefening. Je beste score wordt bewaard in deze browser. <i>Pick an exercise; your best score is saved in this browser.</i></p>
-  <div class="rule" style="background:var(--peach)"><b style="color:var(--coral)">Nieuw (12 november):</b> vijf nieuwe spelletjes om te vervoegen zonder veel te typen (Tijdrace, Memory, Sorteren, Goed of fout, Tegenwoordige tijd) en ${VERBS.length} werkwoorden in totaal.</div>`;
+  <div class="rule" style="background:var(--peach)"><b style="color:var(--coral)">Nieuw (13 november):</b> Regelkaarten met ezelsbruggetjes, Stam maken, Zin omzetten (verleden tijd en voltooide tijd), Patronen (ij-ee-e, i-o-o) en Beleefd maken. Er staan nu ${VERBS.length} werkwoorden in de kaarten en spelletjes.</div>`;
   const g=el("div",{class:"grid"});
   SECTIONS.filter(s=>s.id!=="start").forEach(s=>{
     const pct=best[s.id]||0;
