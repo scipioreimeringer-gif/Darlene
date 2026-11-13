@@ -82,6 +82,15 @@ table.ref td{padding:7px 9px;border-bottom:1px solid var(--line)}
 table.ref tr:nth-child(even) td{background:var(--tint)}
 .kof{display:flex;gap:6px;justify-content:center;margin:6px 0 14px}
 .kof span{width:36px;height:36px;border-radius:9px;background:var(--peach);color:var(--coral);font-weight:700;display:flex;align-items:center;justify-content:center}
+.spk{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--teal);font-size:14px;cursor:pointer;margin-left:8px;vertical-align:middle;padding:0;font-family:inherit;line-height:1}
+.spk:hover{border-color:var(--teal)}
+.choice .spk{width:24px;height:24px;font-size:11px}
+.front .spk,.huge .spk{}
+.front .spk{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.45);margin:10px 0 0}
+.fb:empty+.spk{display:none}
+.voicebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:13px}
+.voicebar button{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}
+.voicebar button.on{background:#fff;color:var(--teal)}
 @media(max-width:560px){.vgrid{grid-template-columns:1fr}.face .w{font-size:28px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -89,6 +98,7 @@ table.ref tr:nth-child(even) td{background:var(--tint)}
 <header>
   <h1>Darlene oefent Nederlands</h1>
   <p>Alles uit les 1 tot en met 4 · bijgewerkt op 13 november</p>
+  <div class="voicebar"><span>🔊 Klik op het luidsprekertje om het te horen</span><button id="slowbtn">Langzaam: uit</button><span id="novoice" style="display:none;opacity:.9"></span></div>
 </header>
 <nav id="nav"></nav>
 <main id="main"></main>
@@ -300,9 +310,9 @@ function mcList(box,sc,items){
     const q=el("div",{class:"q"});q.appendChild(el("div",{class:"p"},p));
     const row=el("div");const fb=el("div",{class:"fb"});let done=false;
     shuffle([ok,...wr]).forEach(o=>{
-      const b=el("button",{class:"choice"},o);
+      const b=el("button",{class:"choice"},o);b.dataset.v=o;
       b.onclick=()=>{if(done)return;done=true;
-        row.querySelectorAll("button").forEach(x=>{if(x.textContent===ok)x.classList.add("ok");x.disabled=true});
+        row.querySelectorAll("button").forEach(x=>{if(x.dataset.v===ok)x.classList.add("ok");x.disabled=true});
         if(o===ok){fb.textContent="Goed!"+(note?" "+note:"");fb.className="fb ok";sc.hit()}
         else{b.classList.add("bad");fb.innerHTML=`Goed is: <b>${ok}</b>.`+(note?" "+note:"");fb.className="fb bad"}};
       row.appendChild(b)});
@@ -411,7 +421,7 @@ function buildMemory(root){
   <div class="row" style="margin-bottom:12px"><div class="seg"><button data-m="vd" class="on">+ voltooid deelwoord</button><button data-m="vt">+ verleden tijd</button></div><button class="btn alt" data-r="new">Nieuw spel</button><span class="score" data-r="sc"></span></div>
   <div data-r="grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"></div><div class="fb" data-r="fb" style="margin-top:10px"></div>`;
   const $=k=>root.querySelector(`[data-r="${k}"]`);
-  const face=(b,open)=>{b.textContent=open?b.dataset.t:"?";b.style.background=open?"#fff":"var(--teal)";b.style.color=open?"var(--ink)":"#fff"};
+  const face=(b,open)=>{if(open)speak(b.dataset.t);b.textContent=open?b.dataset.t:"?";b.style.background=open?"#fff":"var(--teal)";b.style.color=open?"var(--ink)":"#fff"};
   const deal=()=>{
     first=null;lock=false;found=0;moves=0;$("fb").textContent="";$("sc").textContent="0 beurten";
     const vs=shuffle(VERBS).slice(0,pairs);
@@ -661,6 +671,29 @@ function buildTiles(root,id,data,title,intro,rule){
   $("next").onclick=()=>{i++;render()};
   render();
 }
+
+/* ---------- voorlezen (spraaksynthese in de browser) ---------- */
+const SPK={slow:!!store.get("slow"),voice:null};
+function pickVoice(){try{const vs=speechSynthesis.getVoices()||[];SPK.voice=vs.find(v=>/^nl[-_]NL/i.test(v.lang))||vs.find(v=>/^nl/i.test(v.lang))||null;
+  const nv=document.getElementById("novoice");if(nv){if(!SPK.voice&&vs.length){nv.textContent="Geen Nederlandse stem gevonden op dit apparaat. Zet er een aan in de instellingen van je telefoon of computer.";nv.style.display="inline"}else nv.style.display="none"}}catch(e){}}
+function textOf(e){const c=e.cloneNode(true);c.querySelectorAll(".spk,.tag").forEach(x=>x.remove());
+  if(c.classList&&c.classList.contains("slot"))return [...c.children].map(x=>x.textContent).join(" ");
+  c.querySelectorAll("br").forEach(b=>b.replaceWith(". "));
+  return c.textContent.replace(/___/g,", ").replace(/\s*→\s*/g,", ").replace(/\s*·\s*/g,", ").replace(/\s+/g," ").trim()}
+function speak(text){
+  try{if(!window.speechSynthesis||!text)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="nl-NL";if(SPK.voice)u.voice=SPK.voice;u.rate=SPK.slow?0.6:0.92;speechSynthesis.speak(u)}catch(e){}}
+function spkBtn(getText){const b=document.createElement("span");b.className="spk";b.setAttribute("role","button");b.setAttribute("aria-label","Luister");b.title="Luister";b.textContent="🔊";
+  b.addEventListener("click",ev=>{ev.stopPropagation();ev.preventDefault();speak(getText())});return b}
+function enhance(){
+  const r=document.getElementById("main");if(!r)return;
+  const inside=(sel,skip)=>r.querySelectorAll(sel).forEach(e=>{if(skip&&e.closest(skip))return;if(e.querySelector(":scope>.spk"))return;e.appendChild(spkBtn(()=>textOf(e)))});
+  const after=(sel,skip)=>r.querySelectorAll(sel).forEach(e=>{if(skip&&e.closest(skip))return;const n=e.nextElementSibling;if(n&&n.classList.contains("spk"))return;e.insertAdjacentElement("afterend",spkBtn(()=>textOf(e)))});
+  inside(".q .p");inside(".choice");inside(".big,.huge",".q .p,.choice");
+  after(".face .w");after(".slot");after(".fb");after("[data-r=z]");
+}
+let enhT=null;new MutationObserver(()=>{if(enhT)return;enhT=requestAnimationFrame(()=>{enhT=null;enhance()})}).observe(document.getElementById("main"),{childList:true,subtree:true});
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+(function(){const b=document.getElementById("slowbtn");const set=()=>{b.textContent="Langzaam: "+(SPK.slow?"aan":"uit");b.classList.toggle("on",SPK.slow)};b.onclick=()=>{SPK.slow=!SPK.slow;store.set("slow",SPK.slow);set();speak("Zo klinkt het.")};set()})();
 show();
 </script>
 </body>
